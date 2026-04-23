@@ -106,7 +106,7 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
             <textarea name="description" rows="5"></textarea>
         </div>
 
-        <!-- Price -->
+        <!-- Pricee -->
         <div class="card">
             <label>Regular Price</label>
             <input type="text" name="price">
