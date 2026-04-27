@@ -3,23 +3,30 @@ include '../config.php';
 
 if(isset($_POST['add_category'])){
 
-    $category_name = $_POST['category_name'];
+    $category_name = mysqli_real_escape_string($conn, $_POST['category_name']);
+    $parent_id = isset($_POST['parent_id']) ? $_POST['parent_id'] : 0;
 
     $image_name = '';
 
-    if(isset($_FILES['category_image']) && $_FILES['category_image']['name'] != ''){
-        $image_name = $_FILES['category_image']['name'];
+    // Image Upload
+    if(!empty($_FILES['category_image']['name'])){
+        $image_name = time() . "_" . $_FILES['category_image']['name'];
         $image_tmp = $_FILES['category_image']['tmp_name'];
 
         move_uploaded_file($image_tmp, '../uploads/' . $image_name);
     }
 
-    $insert_query = mysqli_query($conn, "INSERT INTO admin_categories(category_name, category_image)
-    VALUES('$category_name', '$image_name')");
+    // Insert Query
+    $insert_query = mysqli_query($conn, "
+        INSERT INTO categories (name, parent_id, image)
+        VALUES ('$category_name', '$parent_id', '$image_name')
+    ");
 
     if($insert_query){
         echo "<script>alert('Category Added Successfully');</script>";
         echo "<script>window.location.href='dashboard.php?page=add-category';</script>";
+    } else {
+        echo mysqli_error($conn);
     }
 }
 ?>
@@ -28,21 +35,43 @@ if(isset($_POST['add_category'])){
 
     <div class="page-header">
         <h2>Add Category</h2>
-        <p>Create category and manage all categories from one place.</p>
+        <p>Create and manage categories</p>
     </div>
 
     <form method="POST" enctype="multipart/form-data" class="category-form">
 
+        <!-- Category Name -->
         <div class="form-group">
             <label>Category Name</label>
-            <input type="text" name="category_name" class="form-control" placeholder="Enter category name" required>
+            <input type="text" name="category_name" class="form-control" required>
         </div>
 
+        <!-- Parent Category -->
+        <div class="form-group">
+            <label>Parent Category</label>
+
+            <select name="parent_id" class="form-control">
+                <option value="0">Main Category</option>
+
+                <?php
+                $parentQuery = mysqli_query($conn, "SELECT * FROM categories WHERE parent_id = 0");
+
+                while($row = mysqli_fetch_assoc($parentQuery)){
+                ?>
+                    <option value="<?= $row['id']; ?>">
+                        <?= $row['name']; ?>
+                    </option>
+                <?php } ?>
+            </select>
+        </div>
+
+        <!-- Image -->
         <div class="form-group">
             <label>Category Image</label>
             <input type="file" name="category_image" class="form-control">
         </div>
 
+        <!-- Button -->
         <button type="submit" name="add_category" class="btn-save">
             Add Category
         </button>
@@ -54,58 +83,68 @@ if(isset($_POST['add_category'])){
     <h3 class="table-title">All Categories</h3>
 
     <div class="table-responsive">
-    <table class="table table-bordered table-hover align-middle bg-white">
+        <table class="table table-bordered table-hover align-middle bg-white">
 
-        <thead class="table-dark text-center">
-            <tr>
-                <th>ID</th>
-                <th>Image</th>
-                <th>Category Name</th>
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Category Name</th>
+                    <th>Parent</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            <?php
+            $category_query = mysqli_query($conn, "SELECT * FROM categories ORDER BY id ASC");
+
+            if(mysqli_num_rows($category_query) > 0){
+                while($row = mysqli_fetch_assoc($category_query)){
+
+                    $parent_name = "Main";
+
+                    if($row['parent_id'] != 0){
+                        $parent = mysqli_fetch_assoc(mysqli_query($conn, 
+                            "SELECT name FROM categories WHERE id=".$row['parent_id']
+                        ));
+                        $parent_name = $parent['name'];
+                    }
+            ?>
+
+            <tr class="text-center">
+
+                <td><?= $row['id']; ?></td>
+
+                <td>
+                    <?php if(!empty($row['image'])){ ?>
+                        <img src="../uploads/<?= $row['image']; ?>" 
+                             width="60" height="60"
+                             style="object-fit:cover; border-radius:10px;">
+                    <?php } else { ?>
+                        <span class="text-muted">No Image</span>
+                    <?php } ?>
+                </td>
+
+                <td><?= htmlspecialchars($row['name']); ?></td>
+
+                <td><?= $parent_name; ?></td>
+
             </tr>
-        </thead>
 
-        <tbody>
+            <?php } } else { ?>
 
-        <?php
-        $category_query = mysqli_query($conn, "SELECT * FROM admin_categories ORDER BY id ASC");
+            <tr>
+                <td colspan="4" class="text-center text-danger py-4">
+                    No Categories Found
+                </td>
+            </tr>
 
-        if(mysqli_num_rows($category_query) > 0){
-            while($row = mysqli_fetch_assoc($category_query)){
-        ?>
+            <?php } ?>
 
-        <tr class="align-middle text-center">
-
-            <td><?php echo $row['id']; ?></td>
-
-            <td>
-                <?php if(!empty($row['category_image'])){ ?>
-                    <img src="../uploads/<?php echo $row['category_image']; ?>" 
-                         width="60" height="60"
-                         style="object-fit:cover; border-radius:10px;">
-                <?php } else { ?>
-                    <span class="text-muted">No Image</span>
-                <?php } ?>
-            </td>
-
-            <td class="fw-semibold">
-                <?php echo htmlspecialchars($row['category_name']); ?>
-            </td>
-
-        </tr>
-
-        <?php } } else { ?>
-
-        <tr>
-            <td colspan="3" class="text-center text-danger py-4">
-                No Categories Found
-            </td>
-        </tr>
-
-        <?php } ?>
-
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
 
 </div>
 
@@ -118,13 +157,7 @@ if(isset($_POST['add_category'])){
 }
 
 .page-header h2 {
-    font-size: 28px;
-    margin-bottom: 5px;
-}
-
-.page-header p {
-    color: #666;
-    margin-bottom: 25px;
+    font-size: 26px;
 }
 
 .category-form {
@@ -138,33 +171,24 @@ if(isset($_POST['add_category'])){
     flex-direction: column;
 }
 
-.form-group label {
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
 .form-control {
-    padding: 12px;
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 10px;
-    outline: none;
+    border-radius: 8px;
 }
 
 .btn-save {
     background: #4f46e5;
     color: white;
     border: none;
-    padding: 14px;
-    border-radius: 10px;
+    padding: 12px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
     grid-column: span 2;
-    max-width: 220px;
+    max-width: 200px;
 }
 
 .table-title {
     margin-top: 25px;
-    margin-bottom: 15px;
 }
-
 </style>

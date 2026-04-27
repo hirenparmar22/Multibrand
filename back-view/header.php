@@ -5,9 +5,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
 }
 ?>
 
-<header class="header px-4 py-3 mb-4">
+<header class="header-container px-4 py-3 mb-4">
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center px-4 py-3 gap-3 rounded-4 shadow-small border border-secondary-subtle bg-white-subtle">
+    <div class="header-inner d-flex flex-wrap justify-content-between align-items-center px-4 py-3 gap-3 rounded-4 shadow-small border border-secondary-subtle bg-white-subtle">
 
         <!-- Left -->
         <div class="d-flex align-items-center gap-3 flex-wrap text-dark">
@@ -65,7 +65,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
         </div> -->
 
         <!-- Right -->
-        <div class="d-flex align-items-center gap-2 flex-wrap">
+        <div class="header-right d-flex align-items-center gap-2 flex-wrap">
 
             <button class="btn btn-white border border-secondary">
                 <i class="fas fa-bell"></i>
@@ -109,7 +109,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
 </header>
 
 <style>
-.header > div{
+.header-container{
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
 }
@@ -123,6 +123,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
     padding-left: 18px;
     transition: 0.3s;
 }
+.header-inner{
+    flex-direction: row;
+}
+
+.header-right{
+    justify-content: flex-end;
+}
+
 
 @media(max-width:991px){
 
@@ -131,36 +139,48 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
         max-width: 100%;
         order: 3;
     }
-
-    .header .d-flex.justify-content-between{
+    .header-right{
+        justify-content: center;
+    }
+    /* .header-container .d-flex.justify-content-between{
         flex-direction: column;
         align-items: stretch !important;
-    }
+    } */
+      
 
-    .header .btn-danger{
+    .header-container .btn-danger{
         width: 100%;
     }
 
-    .header .d-flex.align-items-center.gap-2.flex-wrap{
+    /* .header-container .d-flex.align-items-center.gap-2.flex-wrap{
         justify-content: center;
-    }
+    } */
 }
 
+
+
+/* mobile only */
+@media(max-width:991px){
+    .header-inner{
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+}
 @media(max-width:576px){
 
-    .header h4{
+    .header-container h4{
         font-size: 18px;
     }
 
-    .header small{
+    .header-container small{
         font-size: 12px;
     }
 
-    .header .btn{
+    .header-container .btn{
         font-size: 13px;
     }
 
-    .header img{
+    .header-container img{
         width: 40px !important;
         height: 40px !important;
     }
