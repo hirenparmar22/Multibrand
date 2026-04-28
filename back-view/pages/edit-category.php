@@ -11,20 +11,26 @@ if(isset($_GET['id'])){
 
 if(isset($_POST['update_category'])){
     
-    $category_name = $_POST['category_name'];
+    $category_name = mysqli_real_escape_string($conn, $_POST['name']);
 
-    $image_name = $row['category_image'];
+    $image_name = $row['image'];
 
-    if(isset($_FILES['category_image']) && $_FILES['category_image']['name'] != ''){
-        $image_name = $_FILES['category_image']['name'];
-        $image_tmp = $_FILES['category_image']['tmp_name'];
+    if(!empty($_FILES['image']['name'])){
+
+    // delete old image
+        if(!empty($row['image']) && file_exists('../uploads/'.$row['image'])){
+            unlink('../uploads/'.$row['image']);
+        }
+
+        $image_name = time() . "_" . $_FILES['image']['name'];
+        $image_tmp = $_FILES['image']['tmp_name'];
 
         move_uploaded_file($image_tmp, '../uploads/' . $image_name);
     }
 
-    mysqli_query($conn, "UPDATE admin_categories 
-    SET category_name='$category_name',
-    category_image='$image_name'
+    mysqli_query($conn, "UPDATE categories 
+    SET name='$category_name',
+    image='$image_name'
     WHERE id='$edit_id'");
 
     echo "<script>alert('Category Updated Successfully');</script>";
@@ -43,19 +49,19 @@ if(isset($_POST['update_category'])){
 
         <div class="form-group">
             <label>Category Name</label>
-            <input type="text" name="category_name" class="form-control" value="<?php echo isset($row['category_name']) ? $row['category_name'] : ''; ?>" required>
+            <input type="text" name="name" class="form-control" value="<?php echo isset($row['name']) ? $row['name'] : ''; ?>" required>
         </div>
 
         <div class="form-group">
             <label>Current Image</label><br>
-            <?php if(isset($row['category_image']) && $row['category_image'] != ''){ ?>
-                <img src="../uploads/<?php echo $row['category_image']; ?>" width="80">
+            <?php if(isset($row['image']) && $row['image'] != ''){ ?>
+                <img src="../uploads/<?php echo $row['image']; ?>" width="80">
             <?php } ?> 
         </div>
 
         <div class="form-group">
             <label>Change Image</label>
-            <input type="file" name="category_image" class="form-control">
+            <input type="file" name="image" class="form-control">
         </div>
 
         <button type="submit" name="update_category" class="btn-save">

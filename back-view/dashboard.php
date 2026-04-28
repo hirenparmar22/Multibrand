@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start();
 include '../config.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -12,7 +13,6 @@ $totalBrands = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total 
 $totalCampaigns = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM admin_campaigns"))['total'];
 $totalmessages = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM admin_messages"))['total'];
 ?>
-
 <?php include 'slidebar.php'; ?>
 
 <div class="page-wrapper">

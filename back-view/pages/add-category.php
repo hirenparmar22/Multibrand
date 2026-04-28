@@ -1,14 +1,17 @@
-<?php
+<?php 
 include '../config.php';
 
+// ADD CATEGORY
 if(isset($_POST['add_category'])){
 
     $category_name = mysqli_real_escape_string($conn, $_POST['category_name']);
-    $parent_id = isset($_POST['parent_id']) ? $_POST['parent_id'] : 0;
+    $slug = mysqli_real_escape_string($conn, $_POST['slug']);
+
+    $parent_id = !empty($_POST['parent_id']) ? $_POST['parent_id'] : "NULL";
 
     $image_name = '';
 
-    // Image Upload
+    // IMAGE UPLOAD
     if(!empty($_FILES['category_image']['name'])){
         $image_name = time() . "_" . $_FILES['category_image']['name'];
         $image_tmp = $_FILES['category_image']['tmp_name'];
@@ -16,10 +19,10 @@ if(isset($_POST['add_category'])){
         move_uploaded_file($image_tmp, '../uploads/' . $image_name);
     }
 
-    // Insert Query
+    // INSERT QUERY
     $insert_query = mysqli_query($conn, "
-        INSERT INTO categories (name, parent_id, image)
-        VALUES ('$category_name', '$parent_id', '$image_name')
+        INSERT INTO categories (name, slug, parent_id, image)
+        VALUES ('$category_name', '$slug', $parent_id, '$image_name')
     ");
 
     if($insert_query){
@@ -31,164 +34,185 @@ if(isset($_POST['add_category'])){
 }
 ?>
 
-<div class="page-content">
+<div class="wc-container">
 
-    <div class="page-header">
-        <h2>Add Category</h2>
-        <p>Create and manage categories</p>
-    </div>
+    <!-- LEFT PANEL -->
+    <div class="wc-left">
+        <h3>Add new category</h3>
 
-    <form method="POST" enctype="multipart/form-data" class="category-form">
+        <form method="POST" enctype="multipart/form-data">
 
-        <!-- Category Name -->
-        <div class="form-group">
-            <label>Category Name</label>
-            <input type="text" name="category_name" class="form-control" required>
-        </div>
+            <label>Name</label>
+            <input type="text" name="category_name" id="name" placeholder="Category name" required>
 
-        <!-- Parent Category -->
-        <div class="form-group">
-            <label>Parent Category</label>
+            <label>Slug</label>
+            <input type="text" name="slug" id="slug" placeholder="category-slug">
 
-            <select name="parent_id" class="form-control">
-                <option value="0">Main Category</option>
+            <label>Parent category</label>
+            <select name="parent_id">
+                <option value="">None</option>
 
                 <?php
-                $parentQuery = mysqli_query($conn, "SELECT * FROM categories WHERE parent_id = 0");
-
+                $parentQuery = mysqli_query($conn, "SELECT * FROM categories WHERE parent_id IS NULL");
                 while($row = mysqli_fetch_assoc($parentQuery)){
+                    echo "<option value='".$row['id']."'>".$row['name']."</option>";
+                }
                 ?>
-                    <option value="<?= $row['id']; ?>">
-                        <?= $row['name']; ?>
-                    </option>
-                <?php } ?>
             </select>
-        </div>
 
-        <!-- Image -->
-        <div class="form-group">
-            <label>Category Image</label>
-            <input type="file" name="category_image" class="form-control">
-        </div>
+            <label>Image</label>
+            <input type="file" name="category_image">
 
-        <!-- Button -->
-        <button type="submit" name="add_category" class="btn-save">
-            Add Category
-        </button>
+            <button type="submit" name="add_category">Add new category</button>
 
-    </form>
+        </form>
+    </div>
 
-    <hr>
 
-    <h3 class="table-title">All Categories</h3>
+    <!-- RIGHT PANEL -->
+    <div class="wc-right">
+        <h3>Categories</h3>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle bg-white">
-
-            <thead class="table-dark text-center">
+        <table class="wc-table">
+            <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Image</th>
-                    <th>Category Name</th>
-                    <th>Parent</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Slug</th>
+                    <th>Count</th>
                 </tr>
             </thead>
 
             <tbody>
+                <?php
+                $category_query = mysqli_query($conn, "SELECT * FROM categories ORDER BY id ASC");
 
-            <?php
-            $category_query = mysqli_query($conn, "SELECT * FROM categories ORDER BY id ASC");
-
-            if(mysqli_num_rows($category_query) > 0){
                 while($row = mysqli_fetch_assoc($category_query)){
 
-                    $parent_name = "Main";
+                    $prefix = "";
 
-                    if($row['parent_id'] != 0){
-                        $parent = mysqli_fetch_assoc(mysqli_query($conn, 
-                            "SELECT name FROM categories WHERE id=".$row['parent_id']
-                        ));
-                        $parent_name = $parent['name'];
+                    if(!empty($row['parent_id'])){
+                        $prefix = "— ";
                     }
-            ?>
+                ?>
 
-            <tr class="text-center">
+                <tr>
+                    <td><strong><?= $prefix . $row['name']; ?></strong></td>
+                    <td>-</td>
+                    <td><?= $row['slug'] ?? '-'; ?></td>
+                    <td>0</td>
+                </tr>
 
-                <td><?= $row['id']; ?></td>
-
-                <td>
-                    <?php if(!empty($row['image'])){ ?>
-                        <img src="../uploads/<?= $row['image']; ?>" 
-                             width="60" height="60"
-                             style="object-fit:cover; border-radius:10px;">
-                    <?php } else { ?>
-                        <span class="text-muted">No Image</span>
-                    <?php } ?>
-                </td>
-
-                <td><?= htmlspecialchars($row['name']); ?></td>
-
-                <td><?= $parent_name; ?></td>
-
-            </tr>
-
-            <?php } } else { ?>
-
-            <tr>
-                <td colspan="4" class="text-center text-danger py-4">
-                    No Categories Found
-                </td>
-            </tr>
-
-            <?php } ?>
-
+                <?php } ?>
             </tbody>
         </table>
+
     </div>
 
 </div>
 
 <style>
-.page-content {
-    background: #fff;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+body {
+    background: #f1f1f1;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-.page-header h2 {
-    font-size: 26px;
-}
-
-.category-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.form-group {
+/* LAYOUT */
+.wc-container {
     display: flex;
-    flex-direction: column;
+    gap: 25px;
+    padding: 25px;
 }
 
-.form-control {
-    padding: 10px;
-    border: 1px solid #ddd;
+/* LEFT PANEL */
+.wc-left {
+    width: 280px;
+    background:whitesmoke;
+    padding: 20px;
     border-radius: 8px;
+    border: 1px solid #dcdcde;
 }
 
-.btn-save {
-    background: #4f46e5;
+.wc-left h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.wc-left label {
+    font-size: 13px;
+    margin-top: 10px;
+    display: block;
+    color: #1d2327;
+}
+
+.wc-left input,
+.wc-left select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #8c8f94;
+    background: whitesmoke;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.wc-left button {
+    margin-top: 15px;
+    background: #2271b1;
     color: white;
     border: none;
-    padding: 12px;
-    border-radius: 8px;
+    padding: 8px;
+    width: 100%;
+    border-radius: 4px;
     cursor: pointer;
-    grid-column: span 2;
-    max-width: 200px;
 }
 
-.table-title {
-    margin-top: 25px;
+/* RIGHT PANEL */
+.wc-right {
+    flex: 1;
+    background:whitesmoke;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #dcdcde;
 }
+
+.wc-right h3 {
+    margin-bottom: 15px;
+}
+
+/* TABLE */
+.wc-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.wc-table th {
+    background: #5a5e5e;
+    text-align: left;
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid black;
+}
+
+.wc-table td {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f1;
+    font-size: 13px;
+}
+
+.wc-table tr:hover {
+    background: #f6f7f7;
+}
+
 </style>
+
+<script>
+document.getElementById("name").addEventListener("keyup", function(){
+    let slug = this.value
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '');
+
+    document.getElementById("slug").value = slug;
+});
+</script>

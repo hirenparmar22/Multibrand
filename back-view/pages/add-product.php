@@ -3,13 +3,56 @@ include_once("../config.php");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+$product = null;
+
+if(isset($_GET['id'])){
+    $id = $_GET['id'];
+
+    $result = mysqli_query($conn, "SELECT * FROM products WHERE id='$id'");
+    $product = mysqli_fetch_assoc($result);
+}
+
 // CATEGORY FETCH
 $catQuery = mysqli_query($conn, "SELECT * FROM categories");
 
 // BRAND FETCH
 $brandQuery = mysqli_query($conn, "SELECT * FROM brands");
 
-if(isset($_POST['submit'])){
+if(isset($_POST['publish_btn']))
+{
+    $id = $_POST['id'];
+
+    $query = "UPDATE products 
+              SET status='active' 
+              WHERE id='$id'";
+
+    mysqli_query($conn, $query);
+
+    header("Location: add-product.php?id=$id");
+    exit();
+}
+
+if(isset($_POST['update_btn']))
+{
+    $id = $_POST['id'];
+
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $price = mysqli_real_escape_string($conn, $_POST['price']);
+    $stock = mysqli_real_escape_string($conn, $_POST['stock']);
+
+    $query = "UPDATE products SET 
+                name='$name',
+                price='$price',
+                stock='$stock'
+              WHERE id='$id'";
+
+    mysqli_query($conn, $query);
+
+    header("Location: add-product.php?id=$id");
+    exit();
+}
+
+if(isset($_POST['save_draft_btn'])){
     echo "FORM SUBMITTED<br>";
     
     if(empty($_POST['name']) || empty($_POST['price']) || empty($_POST['stock'])){
@@ -27,7 +70,8 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
     // $category = mysqli_real_escape_string($conn, $_POST['category']);
     $categories = isset($_POST['category']) ? $_POST['category'] : [];
     $brand = mysqli_real_escape_string($conn, $_POST['brand']);
-    $status = mysqli_real_escape_string($conn, $_POST['status']);
+    
+    
 
     // 🔹 MAIN IMAGE UPLOAD
     $imageName = time() . "_" . $_FILES['image']['name'];
@@ -49,15 +93,16 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
 
     // 🔹 INSERT PRODUCT
     $query = "INSERT INTO products 
-    (name, description, short_description, price, sale_price, stock, sku, brand_id, image, status) 
-    VALUES 
-    ('$name','$description','$short_desc','$price','$sale_price','$stock','$sku','$brand','$imageName','$status')";
-
+(name, description, short_description, price, sale_price, stock, sku, brand_id, image) 
+VALUES 
+('$name','$description','$short_desc','$price','$sale_price','$stock','$sku','$brand','$imageName')";
     // if(mysqli_query($conn, $query)){
     //     // $product_id = mysqli_insert_id($conn);
     if(mysqli_query($conn, $query)){
     echo "INSERT SUCCESS<br>";
     $product_id = mysqli_insert_id($conn);
+    header("Location: add-product.php?id=$product_id");
+exit();
 } else {
     die("DB ERROR: " . mysqli_error($conn));
 }
@@ -90,17 +135,23 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
 
         }
             // 🔥 ATTRIBUTES SAVE
-            if(isset($_POST['attributes'])){
-                foreach($_POST['attributes'] as $attr_id => $term_id){
+            // 🔥 ATTRIBUTES SAVE (NEW)
+if(isset($_POST['attributes'])){
+    foreach($_POST['attributes'] as $value_id){
 
-                if(!empty($term_id)){
-                     mysqli_query($conn, "INSERT INTO product_attributes 
-                    (product_id, attribute_id, term_id) 
-                    VALUES ('$product_id', '$attr_id', '$term_id')");
-                }
+        // attribute_id find karo
+        $getAttr = mysqli_query($conn, 
+        "SELECT attribute_id FROM attribute_values WHERE id='$value_id'");
 
-            }
-        }
+        $attrData = mysqli_fetch_assoc($getAttr);
+        $attribute_id = $attrData['attribute_id'];
+
+        // insert into product_attributes
+        mysqli_query($conn, "INSERT INTO product_attributes 
+        (product_id, attribute_id, attribute_value_id) 
+        VALUES ('$product_id', '$attribute_id', '$value_id')");
+    }
+}
         // ✅ STEP 4 END
 
         echo "<script>alert('Product Added Successfully');</script>";
@@ -115,6 +166,7 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
 </div>
 
 <form action="" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="<?= $product['id'] ?? '' ?>">
 
 <div class="product-wrapper">
 
@@ -124,19 +176,19 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
         <!-- Product Name -->
         <div class="product-card">
             <label>Product Name</label>
-            <input type="text" name="name" placeholder="Enter product name" required>
+            <input type="text" name="name" value="<?= $product['name'] ?? '' ?>" placeholder="Enter product name" required>
         </div>
 
         <!-- Description -->
         <div class="product-card">
             <label>Description</label>
-            <textarea name="description" rows="5"></textarea>
+            <textarea name="description" rows="5"><?= $product['description'] ?? '' ?></textarea>
         </div>
 
         <!-- Short Description -->
         <div class="product-card">
             <label>Short Description</label>
-            <textarea name="short_desc" rows="3"></textarea>
+            <textarea name="short_desc" rows="3"><?= $product['short_description'] ?? '' ?></textarea>
         </div>
 
         <!-- PRODUCT DATA TABS -->
@@ -157,25 +209,25 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
                     <!-- General -->
                     <div id="general" class="tab-content active">
                         <label>Regular Price</label>
-                        <input type="text" name="price">
+                        <input type="text" name="price" value="<?= $product['price'] ?? '' ?>">
 
                         <label>Sale Price</label>
-                        <input type="text" name="sale_price">
+                        <input type="text" name="sale_price" value="<?= $product['sale_price'] ?? '' ?>">
                     </div>
 
                     <!-- Inventory -->
                     <div id="inventory" class="tab-content">
                         <label>Stock</label>
-                        <input type="text" name="stock">
+                        <input type="text" name="stock" value="<?= $product['stock'] ?? '' ?>">
 
                         <label>SKU</label>
-                        <input type="text" name="sku">
+                        <input type="text" name="sku" value="<?= $product['sku'] ?? '' ?>">
                     </div>
 
                     <!-- Shipping -->
                     <div id="shipping" class="tab-content">
                         <label>Weight</label>
-                        <input type="text" name="weight">
+                        <input type="text" name="weight" value="<?= $product['weight'] ?? '' ?>">
                     </div>
 
                 </div>
@@ -202,17 +254,34 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
         </span>
     </div>
 
-    <!-- BODY -->
-    <div class="card-body">
+        <div class="product-card">
 
-        <label>Status</label>
-        <select name="status">
-            <option value="draft">Draft</option>
-            <option value="active">Publish</option>
-        </select>
-
-       
+    <div class="card-header" onclick="toggleCard(this)">
+        <span>Status</span>
     </div>
+
+    <!-- 🔥 BUTTONS HERE -->
+    <?php
+    $status = $product['status'] ?? 'draft';
+    ?>
+
+    <button type="submit" name="save_draft_btn" class="btn btn-secondary">
+        Save Draft
+    </button>
+
+    <?php if(isset($product) && $status == 'draft'): ?>
+        <button type="submit" name="publish_btn" class="btn btn-success">
+            Publish
+        </button>
+    <?php endif; ?>
+
+    <?php if(isset($product) && $status == 'active'): ?>
+        <button type="submit" name="update_btn" class="btn btn-primary">
+            Update
+        </button>
+    <?php endif; ?>
+
+</div>
 
 </div>
 
@@ -257,7 +326,7 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
     <div class="category-tree">
 
         <?php
-        $parentQuery = mysqli_query($conn, "SELECT * FROM categories WHERE parent_id = 0");
+        $parentQuery = mysqli_query($conn, "SELECT * FROM categories WHERE parent_id IS NULL");
 
         while($parent = mysqli_fetch_assoc($parentQuery)){
         ?>
@@ -318,7 +387,7 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
             </div>
         </div>
 
-        <!-- Attributes -->
+        <!-- Attributes --> 
 <div class="product-card">
 
     <div class="card-header" onclick="toggleCard(this)">
@@ -333,28 +402,33 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
 
         <?php
         $attributes = mysqli_query($conn, "SELECT * FROM attributes");
+        echo "<div class='attributes-grid'>"; 
 
         while($attr = mysqli_fetch_assoc($attributes)){
-            echo "<label>{$attr['name']}</label>";
+            echo "<div class='attribute-box'>";
+            // echo "<label><strong>{$attr['name']}</strong></label>";
+            echo "<div class='attr-title'>{$attr['name']}</div>";
 
-            $terms = mysqli_query($conn, 
-            "SELECT * FROM attribute_terms WHERE attribute_id={$attr['id']}");
+            // NEW: attribute_values table
+            $values = mysqli_query($conn, 
+            "SELECT * FROM attribute_values WHERE attribute_id={$attr['id']}");
 
-            echo "<select name='attributes[{$attr['id']}]'>";
-            
-            echo "<option value=''>Select {$attr['name']}</option>";
-
-            while($term = mysqli_fetch_assoc($terms)){
-                echo "<option value='{$term['id']}'>{$term['term_name']}</option>";
-            }
-
-            echo "</select>";
+            while($val = mysqli_fetch_assoc($values)){
+                echo "
+            <label class='attr-option'>
+                <input type='checkbox' 
+               name='attributes[]' 
+               value='{$val['id']}'>
+                {$val['value']}
+            </label>
+            ";
         }
+            echo "</div>";
+        }
+        echo "</div>"; 
         ?>
 
     </div>
-    
-
 </div>
  <button type="submit" name="submit" class="product-btn">
             Save Product
@@ -396,12 +470,12 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.product-card label {
+/* .product-card label {
     font-weight: 600;
     margin-bottom: 6px;
-    display: block;
-    border-bottom: 1px solid #eee;
-}
+    /* display: block; 
+    /* border-bottom: 1px solid #eee; 
+} */
 
 /* Inputs */
 .product-card input,
@@ -542,6 +616,36 @@ $short_desc = mysqli_real_escape_string($conn, $_POST['short_desc']);
 .add-new-link a:hover {
     text-decoration: underline;
 }
+
+.attr-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.attributes-grid {
+    display: flex;   
+    gap:  40px;
+    flex-wrap: wrap;
+}
+
+.attribute-box {
+     margin-bottom: 15px;
+}
+.attr-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    font-weight: normal;
+    line-height: 1; 
+}
+.attr-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+   
+}
+
+
 /* Responsive */
 @media(max-width:768px){
     .product-wrapper {

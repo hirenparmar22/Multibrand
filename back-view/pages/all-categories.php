@@ -5,7 +5,7 @@ if(isset($_GET['delete'])){
 
     $delete_id = $_GET['delete'];
 
-    mysqli_query($conn, "DELETE FROM admin_categories WHERE id='$delete_id'");
+    mysqli_query($conn, "DELETE FROM categories WHERE id='$delete_id'");
 
     echo "<script>alert('Category Deleted Successfully');</script>";
     echo "<script>window.location.href='dashboard.php?page=all-categories';</script>";
@@ -34,7 +34,7 @@ if(isset($_GET['delete'])){
         <tbody>
 
         <?php
-        $category_query = mysqli_query($conn, "SELECT * FROM admin_categories ORDER BY id DESC");
+        $category_query = mysqli_query($conn, "SELECT * FROM categories ORDER BY id DESC");
 
         if(mysqli_num_rows($category_query) > 0){
             while($row = mysqli_fetch_assoc($category_query)){
@@ -45,8 +45,8 @@ if(isset($_GET['delete'])){
             <td><?php echo $row['id']; ?></td>
 
             <td>
-                <?php if(!empty($row['category_image'])){ ?>
-                    <img src="../uploads/<?php echo $row['category_image']; ?>" 
+                <?php if(!empty($row['image'])){ ?>
+                    <img src="../uploads/<?php echo $row['image']; ?>" 
                          width="60" height="60"
                          style="object-fit:cover; border-radius:10px;">
                 <?php } else { ?>
@@ -55,7 +55,7 @@ if(isset($_GET['delete'])){
             </td>
 
             <td class="fw-semibold">
-                <?php echo htmlspecialchars($row['category_name']); ?>
+                <?php echo htmlspecialchars($row['name']); ?>
             </td>
 
             <td class="text-center">
