@@ -11,7 +11,7 @@ if(isset($_GET['delete'])){
     echo "<script>window.location.href='dashboard.php?page=all-categories';</script>";
 }
 ?>
-
+f
 <div class="page-content">
 
     <div class="page-header">
