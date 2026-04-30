@@ -44,40 +44,41 @@ if (isset($_POST['update_btn'])) {
     $query = "UPDATE products SET name='$name', price='$price', stock='$stock' WHERE id='$id'";
 
     if (mysqli_query($conn, $query)) {
-         header("Location: /back-view/dashboard.php?page=add-product&msg=updated&id=$id");
+        header("Location: /back-view/dashboard.php?page=add-product&msg=updated&id=$id");
         exit();
     }
 }
 
-    // 4. SAVE DRAFT (INSERT) LOGIC
-    if (isset($_POST['save_draft_btn'])) {
+// 4. SAVE DRAFT (INSERT) LOGIC
+if (isset($_POST['save_draft_btn'])) {
 
 
 
-        // Sanitize Inputs
-        $name         = mysqli_real_escape_string($conn, $_POST['name'] ?? '');
-        $description  = mysqli_real_escape_string($conn, $_POST['description'] ?? '');
-        $short_desc   = mysqli_real_escape_string($conn, $_POST['short_desc'] ?? '');
-        $price        = (float)($_POST['price'] ?? 0);
-        $sale_price_sql   = !empty($_POST['sale_price']) ? (float)$_POST['sale_price'] : "NULL";
-        $stock        = (int)($_POST['stock'] ?? 0);
-        $sku          = mysqli_real_escape_string($conn, $_POST['sku'] ?? '');
-        $brand_sql = !empty($_POST['brand'])? (int)$_POST['brand']: "NULL";
-        $categories   = $_POST['category'] ?? [];
-        $imageName_sql = !empty($imageName) ? "'$imageName'" : "NULL";
+    // Sanitize Inputs
+    $name         = mysqli_real_escape_string($conn, $_POST['name'] ?? '');
+    $description  = mysqli_real_escape_string($conn, $_POST['description'] ?? '');
+    $short_desc   = mysqli_real_escape_string($conn, $_POST['short_desc'] ?? '');
+    $price        = (float)($_POST['price'] ?? 0);
+    $sale_price_sql   = !empty($_POST['sale_price']) ? (float)$_POST['sale_price'] : "NULL";
+    $stock        = (int)($_POST['stock'] ?? 0);
+    $sku          = mysqli_real_escape_string($conn, $_POST['sku'] ?? '');
+    $brand_sql = !empty($_POST['brand']) ? (int)$_POST['brand'] : "NULL";
+    $categories   = $_POST['category'] ?? [];
 
-        // Image Handling
-        $imageName = "NULL";
-        if (!empty($_FILES['image']['name'])) {
-            $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-            if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                $imageName = time() . "_" . $_FILES['image']['name'];
-                move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/products/" . str_replace("'", "", $imageName));
-            }
+
+    // Image Handling
+    $imageName = "";
+    if (!empty($_FILES['image']['name'])) {
+        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+            $imageName = time() . "_" . $_FILES['image']['name'];
+            move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/products/" . str_replace("'", "", $imageName));
         }
+    }
+    $imageName_sql = !empty($imageName) ? "'$imageName'" : "NULL";
 
-        // INSERT PRODUCT
-        $query = "INSERT INTO products 
+    // INSERT PRODUCT
+    $query = "INSERT INTO products 
             (name, description, short_description, price, sale_price, stock, sku, brand_id, image, status) 
             VALUES 
             ('$name', '$description', '$short_desc', $price, $sale_price_sql, $stock, '$sku', $brand_sql, $imageName_sql, 'draft')";
@@ -113,7 +114,7 @@ if (isset($_POST['update_btn'])) {
             }
         }
 
-        
+
         header("Location: /back-view/dashboard.php?page=add-product&msg=draft&id=$product_id");
         exit();
     } else {
@@ -128,143 +129,17 @@ if (isset($_POST['update_btn'])) {
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-    :root {
-        --bs-border-radius: 12px;
-        --admin-bg: #f8fafc;
-        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: var(--admin-bg);
-        color: #334155;
-    }
-
-    /* Premium Card Styling */
-    .card {
-        border: 1px solid #e2e8f0;
-        border-radius: var(--bs-border-radius);
-        box-shadow: var(--card-shadow);
-        margin-bottom: 1.5rem;
-        overflow: hidden;
-    }
-
-    .card-header {
-        background: #ffffff;
-        border-bottom: 1px solid #f1f5f9;
-        padding: 1.25rem;
-        font-weight: 700;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    /* Form Controls */
-    .form-control,
-    .form-select {
-        border-radius: 8px;
-        padding: 0.6rem 1rem;
-        border: 1px solid #cbd5e1;
-    }
-
-    .form-control:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-    }
-
-    /* Modern Tabs */
-    .nav-pills-custom .nav-link {
-        color: #64748b;
-        font-weight: 600;
-        padding: 0.8rem 1.5rem;
-        margin-right: 0.5rem;
-        border-radius: 8px;
-        transition: all 0.3s;
-    }
-
-    .nav-pills-custom .nav-link.active {
-        background-color: #ffffff;
-        color: #2563eb;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e2e8f0;
-    }
-
-    /* Attribute Chips */
-    .attr-chip-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .attr-chip {
-        cursor: pointer;
-    }
-
-    .attr-chip input {
-        display: none;
-    }
-
-    .attr-chip span {
-        display: inline-block;
-        padding: 6px 16px;
-        border-radius: 20px;
-        border: 1px solid #e2e8f0;
-        font-size: 13px;
-        font-weight: 500;
-        background: #fff;
-        transition: 0.2s;
-    }
-
-    .attr-chip input:checked+span {
-        background: #2563eb;
-        color: #fff;
-        border-color: #2563eb;
-    }
-
-    /* Image Upload Area */
-    .upload-area {
-        border: 2px dashed #cbd5e1;
-        padding: 2rem;
-        border-radius: 12px;
-        text-align: center;
-        background: #f8fafc;
-        transition: 0.3s;
-        cursor: pointer;
-    }
-
-    .upload-area:hover {
-        border-color: #3b82f6;
-        background: #eff6ff;
-    }
-
-    .preview-img {
-        width: 70px;
-        height: 70px;
-        object-fit: cover;
-        border-radius: 8px;
-        border: 1px solid #e2e8f0;
-    }
-
-    /* Category Tree */
-    .category-tree-item {
-        padding: 4px 0;
-    }
-
-    .child-item {
-        margin-left: 24px;
-        padding-left: 12px;
-        border-left: 2px solid #f1f5f9;
-    }
-
-    .btn {
-        border-radius: 8px;
-        padding: 0.6rem 1.25rem;
-        font-weight: 600;
-    }
-</style>
-
 <div class="container py-5">
+    <?php if (isset($_GET['msg'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php
+            if ($_GET['msg'] == 'draft') echo "Product saved as draft successfully!";
+            if ($_GET['msg'] == 'published') echo "Product published successfully!";
+            if ($_GET['msg'] == 'updated') echo "Product updated successfully!";
+            ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
     <!-- Page Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
         <div>
@@ -457,8 +332,200 @@ if (isset($_POST['update_btn'])) {
         </div>
     </form>
 </div>
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
+    <div id="liveToast" class="toast align-items-center text-bg-success border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body" id="toastMsg"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
 
-<!-- Bootstrap JS Bundle -->
+
+<style>
+:root { --admin-bg: #f0f4ff; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 45%, #f0fdfa 100%);
+    color: #334155;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+body::before {
+    content: "";
+    position: fixed; top: -120px; left: -80px;
+    width: 460px; height: 460px;
+    background: radial-gradient(circle, rgba(99,102,241,0.12), transparent 70%);
+    border-radius: 50%; pointer-events: none; z-index: 0;
+}
+body::after {
+    content: "";
+    position: fixed; bottom: -100px; right: -60px;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(139,92,246,0.09), transparent 70%);
+    border-radius: 50%; pointer-events: none; z-index: 0;
+}
+
+.container { position: relative; z-index: 1; }
+
+/* Glass cards */
+.card {
+    background: rgba(255,255,255,0.70) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.88) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 28px rgba(99,102,241,0.07), 0 1px 3px rgba(0,0,0,0.04) !important;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.card-header {
+    background: rgba(255,255,255,0.5) !important;
+    border-bottom: 1px solid rgba(99,102,241,0.08) !important;
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e1b4b;
+}
+
+/* Form controls */
+.form-control, .form-select {
+    background: rgba(255,255,255,0.85) !important;
+    border: 1px solid rgba(99,102,241,0.2) !important;
+    border-radius: 10px !important;
+    padding: 10px 13px;
+    font-size: 13px;
+    color: #1e293b;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.11) !important;
+}
+
+/* Nav pills */
+.nav-pills-custom {
+    display: flex;
+    gap: 4px;
+    background: rgba(99,102,241,0.06);
+    border-radius: 11px;
+    padding: 4px;
+}
+.nav-pills-custom .nav-link {
+    flex: 1;
+    text-align: center;
+    border-radius: 8px !important;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    padding: 8px 10px;
+    border: none;
+    transition: all 0.18s;
+}
+.nav-pills-custom .nav-link.active {
+    background: #fff !important;
+    color: #4f46e5 !important;
+    box-shadow: 0 1px 4px rgba(99,102,241,0.15);
+}
+
+/* Attribute chips */
+.attr-chip span {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(99,102,241,0.2);
+    font-size: 12px;
+    font-weight: 500;
+    background: rgba(255,255,255,0.85);
+    color: #475569;
+    transition: all 0.18s;
+}
+.attr-chip span:hover { border-color: #6366f1; color: #4f46e5; }
+.attr-chip input:checked + span {
+    background: #6366f1;
+    color: #fff;
+    border-color: #6366f1;
+}
+
+/* Upload area */
+.upload-area {
+    border: 2px dashed rgba(99,102,241,0.22);
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    background: rgba(99,102,241,0.03);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.upload-area:hover {
+    border-color: #6366f1;
+    background: rgba(99,102,241,0.06);
+}
+
+.preview-img {
+    width: 52px; height: 52px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(99,102,241,0.15);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 10px !important;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    transition: all 0.18s;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    border: none !important;
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-secondary, .btn-light {
+    background: rgba(255,255,255,0.8) !important;
+    border: 1px solid rgba(99,102,241,0.25) !important;
+    color: #475569 !important;
+}
+.btn-secondary:hover, .btn-light:hover { background: #fff !important; }
+.btn-success {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    border: none !important;
+}
+
+/* Status badge */
+.badge.bg-info-subtle {
+    background: rgba(99,102,241,0.1) !important;
+    color: #4338ca !important;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+/* Category tree */
+.category-tree-item { padding: 3px 0; }
+.form-check-input:checked {
+    background-color: #6366f1 !important;
+    border-color: #6366f1 !important;
+}
+.child-item {
+    margin-left: 20px;
+    padding-left: 10px;
+    border-left: 2px solid rgba(99,102,241,0.12);
+}
+
+@media (max-width: 768px) {
+    .card { border-radius: 14px !important; }
+}
+</style>
+
+
+
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
@@ -501,4 +568,19 @@ if (isset($_POST['update_btn'])) {
             children.forEach(child => child.checked = this.checked);
         });
     });
+
+    <?php if (isset($_GET['msg'])): ?>
+        var msg = "";
+        <?php if ($_GET['msg'] == 'draft'): ?>
+            msg = "Product saved as draft!";
+        <?php elseif ($_GET['msg'] == 'published'): ?>
+            msg = "Product published!";
+        <?php elseif ($_GET['msg'] == 'updated'): ?>
+            msg = "Product updated!";
+        <?php endif; ?>
+
+        document.getElementById("toastMsg").innerText = msg;
+        var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+        toast.show();
+    <?php endif; ?>
 </script>

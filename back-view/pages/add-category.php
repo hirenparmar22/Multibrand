@@ -111,99 +111,133 @@ if(isset($_POST['add_category'])){
 
 </div>
 
+
 <style>
+* { box-sizing: border-box; }
+
 body {
-    background: #f1f1f1;
+    background: #f0f4ff;
+    background-image:
+        radial-gradient(ellipse 70% 60% at 15% 10%, rgba(99,102,241,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 50% at 85% 85%, rgba(139,92,246,0.10) 0%, transparent 55%);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
 }
 
-/* LAYOUT */
 .wc-container {
     display: flex;
-    gap: 25px;
-    padding: 25px;
+    gap: 20px;
+    padding: 28px 24px;
+    align-items: flex-start;
 }
 
-/* LEFT PANEL */
-.wc-left {
-    width: 280px;
-    background:whitesmoke;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #dcdcde;
+/* Glass card base */
+.wc-left, .wc-right {
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(99,102,241,0.07), 0 1px 3px rgba(0,0,0,0.04);
+    padding: 24px;
 }
 
-.wc-left h3 {
-    margin-bottom: 15px;
-    font-size: 18px;
+/* Left form panel */
+.wc-left { width: 300px; flex-shrink: 0; }
+
+.wc-left h3, .wc-right h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e1b4b;
+    margin-bottom: 20px;
 }
 
 .wc-left label {
-    font-size: 13px;
-    margin-top: 10px;
     display: block;
-    color: #1d2327;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 14px 0 5px;
 }
 
 .wc-left input,
 .wc-left select {
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #8c8f94;
-    background: whitesmoke;
-    border-radius: 4px;
+    padding: 10px 12px;
     font-size: 13px;
+    color: #1e293b;
+    background: rgba(255,255,255,0.85);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.wc-left input:focus,
+.wc-left select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
 }
 
 .wc-left button {
-    margin-top: 15px;
-    background: #2271b1;
-    color: white;
-    border: none;
-    padding: 8px;
+    margin-top: 18px;
     width: 100%;
-    border-radius: 4px;
+    padding: 11px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
 }
 
-/* RIGHT PANEL */
-.wc-right {
-    flex: 1;
-    background:whitesmoke;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #dcdcde;
-}
+.wc-left button:hover { opacity: 0.9; transform: translateY(-1px); }
+.wc-left button:active { transform: scale(0.98); }
 
-.wc-right h3 {
-    margin-bottom: 15px;
-}
+/* Right table panel */
+.wc-right { flex: 1; }
 
-/* TABLE */
 .wc-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.wc-table thead tr {
+    border-bottom: 1px solid rgba(99,102,241,0.12);
 }
 
 .wc-table th {
-    background: #5a5e5e;
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 12px 10px;
     text-align: left;
-    padding: 10px;
-    font-size: 13px;
-    border-bottom: 1px solid black;
+    background: none;
+    border: none;
 }
 
 .wc-table td {
-    padding: 10px;
-    border-bottom: 1px solid #f0f0f1;
+    padding: 11px 12px;
     font-size: 13px;
+    color: #334155;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
 }
 
-.wc-table tr:hover {
-    background: #f6f7f7;
-}
+.wc-table tr:last-child td { border-bottom: none; }
+.wc-table tbody tr:hover { background: rgba(99,102,241,0.03); }
 
+@media (max-width: 820px) {
+    .wc-container { flex-direction: column; }
+    .wc-left { width: 100%; }
+}
 </style>
 
 <script>

@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            }
 
           if ($user['role'] == 'user') {
-          header("Location: dashboard.php");
+          header("Location: font-view/dashboard.php");
          exit;
          }
 
