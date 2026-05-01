@@ -1,3 +1,4 @@
+
 <!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
@@ -10,7 +11,7 @@
       <p class="footer-tagline">Your one-stop multi-brand promotions platform. Discover deals, earn rewards, and save more every day.</p>
     </div>
 
-    
+
     <div class="footer-links">
       <div class="link-group">
         <h4>Quick Links</h4>
@@ -205,3 +206,4 @@
     }
   }
 </style>
+
