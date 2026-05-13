@@ -1,131 +1,109 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Signup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #111827, #1e3a8a);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background: #111;
+            color: white;
         }
 
         .signup-box {
-            background: white;
-            width: 400px;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 500px;
+            margin: 60px auto;
+            background: #161616;
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid #2a2a2a;
         }
 
-        .signup-box h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 15px;
-        }
-
-        .signup-btn {
-            width: 100%;
-            background: #111827;
+        .form-control {
+            background: #222;
+            border: 1px solid #333;
             color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
         }
 
-        .signup-btn:hover {
-            background: #1e3a8a;
-        }
-
-        .login-link {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .login-link a {
-            color: #1e3a8a;
-            text-decoration: none;
+        .form-control:focus {
+            background: #222;
+            color: white;
         }
     </style>
 </head>
+
 <body>
 
-    <div class="signup-box">
-        <h2>Create Account</h2>
+<div class="signup-box">
 
-        <form action="/api/signup-process.php" method="POST" enctype="multipart/form-data">
-            
-            <div class="input-group">
-                <label>Full Name</label>
-                <input type="text" name="full_name" required>
-            </div>
+    <h3 class="text-center mb-4">Create Account</h3>
 
-            <div class="input-group">
-                <label>Username</label>
-                <input type="text" name="username" required>
-            </div>
+    <form action="../api/signup-process.php"
+          method="POST"
+          enctype="multipart/form-data">
 
-            <div class="input-group">
-                <label>Email</label>
-                <input type="email" name="email" required>
-            </div>
-
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" name="password" required>
-            </div>
-
-            <div class="input-group">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" required>
-            </div>
-
-            <div class="input-group">
-                <label>Select Role</label>
-                <select name="role" required>
-                   
-                    <option value="user">User</option>
-                    <option value="manager">Manager</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Your Photo</label>
-                <input type="file" name="profile_image" accept="image/*">
-            </div>
-
-            <button type="submit" class="signup-btn">Sign Up</button>
-        </form>
-
-        <div class="login-link">
-            Already have an account? <a href="login.php">Login</a>
+        <!-- Full Name -->
+        <div class="mb-3">
+            <label>Full Name</label>
+            <input type="text" name="full_name" class="form-control" required>
         </div>
+
+        <!-- Username -->
+        <div class="mb-3">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" required>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-3">
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" class="form-control" required>
+        </div>
+
+        <!-- Role -->
+        <div class="mb-3">
+            <label>Role</label>
+            <select name="role" class="form-control">
+                <option value="user">User</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
+        <!-- Image -->
+        <div class="mb-3">
+            <label>Profile Image</label>
+            <input type="file" name="profile_image" class="form-control">
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-warning w-100">
+            Sign Up
+        </button>
+
+    </form>
+
+    <div class="text-center mt-3">
+        <a href="/" class="text-warning">Already have account? Login</a>
     </div>
+
+</div>
 
 </body>
 </html>

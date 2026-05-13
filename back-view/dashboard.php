@@ -1,10 +1,10 @@
 <?php
-session_start();
+// session_start();
 ob_start();
 include '../config.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php");
+    header("Location:  /index.php");
     exit;
 }
 
@@ -91,6 +91,21 @@ $totalmessages  = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as tot
                     </a>
                 </div>
 
+                <div class="design-container">
+                    <h2>Change Website Design</h2>
+
+                    <form method="POST" action="save_design.php">
+                        <div class="design-buttons">
+                            <button  type="submit"  class="design1" name="design" value="design1">Design 1</button>
+                            <button  type="submit" class="design2" name="design" value="design2">Design 2</button>
+                            <button  type="submit" class="design3" name="design" value="design3">Design 3</button>
+                            <button  type="submit" class="design4" name="design" value="design4">Design 4</button>
+                            <button  type="submit" class="design5" name="design" value="design5">Design 5</button>
+                            <button  type="submit" class="design6" name="design" value="design6">Home</button>
+                        </div>
+                    </form>
+                </div>
+
             <?php else: ?>
                 <h4>Page Not Found</h4>
             <?php endif; ?>
@@ -108,20 +123,7 @@ $totalmessages  = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as tot
 
     </div>
 
-    <div class="design-container">
-        <h2>Change Website Design</h2>
 
-        <form method="POST" action="save_design.php">
-            <div class="design-buttons">
-                <button class="design1" name="design" value="design1">Design 1</button>
-                <button class="design2" name="design" value="design2">Design 2</button>
-                <button class="design3" name="design" value="design3">Design 3</button>
-                <button class="design4" name="design" value="design4">Design 4</button>
-                <button class="design5" name="design" value="design5">Design 5</button>
-                <button class="design6" name="design" value="design6">Design 6</button>
-            </div>
-        </form>
-    </div>
 
     <?php include 'footer.php'; ?>
 </div>
@@ -250,10 +252,10 @@ $totalmessages  = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as tot
 
 
 
-    
+
     .design-container {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .design-buttons {

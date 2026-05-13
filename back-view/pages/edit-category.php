@@ -1,7 +1,7 @@
 <?php
 include '../config.php';
 
-if(isset($_GET['id'])){
+if (isset($_GET['id'])) {
 
     $edit_id = $_GET['id'];
 
@@ -9,17 +9,17 @@ if(isset($_GET['id'])){
     $row = mysqli_fetch_assoc($select_query);
 }
 
-if(isset($_POST['update_category'])){
-    
+if (isset($_POST['update_category'])) {
+
     $category_name = mysqli_real_escape_string($conn, $_POST['name']);
 
     $image_name = $row['image'];
 
-    if(!empty($_FILES['image']['name'])){
+    if (!empty($_FILES['image']['name'])) {
 
-    // delete old image
-        if(!empty($row['image']) && file_exists('../uploads/'.$row['image'])){
-            unlink('../uploads/'.$row['image']);
+        // delete old image
+        if (!empty($row['image']) && file_exists('../uploads/' . $row['image'])) {
+            unlink('../uploads/' . $row['image']);
         }
 
         $image_name = time() . "_" . $_FILES['image']['name'];
@@ -54,9 +54,9 @@ if(isset($_POST['update_category'])){
 
         <div class="form-group">
             <label>Current Image</label><br>
-            <?php if(isset($row['image']) && $row['image'] != ''){ ?>
+            <?php if (isset($row['image']) && $row['image'] != '') { ?>
                 <img src="../uploads/<?php echo $row['image']; ?>" width="80">
-            <?php } ?> 
+            <?php } ?>
         </div>
 
         <div class="form-group">
@@ -73,52 +73,52 @@ if(isset($_POST['update_category'])){
 </div>
 
 <style>
-.page-content {
-    background: #fff;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
+    .page-content {
+        background: #fff;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
 
-.page-header h2 {
-    font-size: 28px;
-    margin-bottom: 5px;
-}
+    .page-header h2 {
+        font-size: 28px;
+        margin-bottom: 5px;
+    }
 
-.page-header p {
-    color: #666;
-    margin-bottom: 20px;
-}
+    .page-header p {
+        color: #666;
+        margin-bottom: 20px;
+    }
 
-.edit-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+    .edit-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
 
-.form-group label {
-    font-weight: 600;
-    margin-bottom: 8px;
-}
+    .form-group label {
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
 
-.form-control {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
+    .form-control {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
 
-.btn-save {
-    background: #16a34a;
-    color: #fff;
-    border: none;
-    padding: 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    max-width: 220px;
-}
+    .btn-save {
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        max-width: 220px;
+    }
 </style>

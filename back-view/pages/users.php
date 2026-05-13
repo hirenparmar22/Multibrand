@@ -1,5 +1,6 @@
 <?php
 header("Location: dashboard.php?page=users");
+include __DIR__ . '/../config.php';
 exit;
 ?>
 <!-- <div class="dropdown-menu-box">

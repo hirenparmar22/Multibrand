@@ -39,4 +39,3 @@ mysqli_query($conn, "UPDATE admin_settings SET
 
 header("Location: dashboard.php?page=settings");
 exit;
-?>

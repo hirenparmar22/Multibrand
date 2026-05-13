@@ -4,7 +4,7 @@
 
 </footer>
 <footer class="bg-dark-subtle border rounded-4 p-4  shadow-sm">
-    
+
     <!-- <div class="row align-items-center gy-4">
 
         <div class="col-lg-6">
@@ -51,7 +51,7 @@
     <!-- <hr class="my-4"> -->
 
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-        
+
         <small class="text-secondary">
             © <?php echo date('Y'); ?> Admin Panel. All Rights Reserved.
         </small>

@@ -1,8 +1,12 @@
 <?php
-session_start();
-session_unset();
-session_destroy();
 
-header("Location:login.php");
+include '../config.php';
+
+$_SESSION = [];
+
+if (session_status() === PHP_SESSION_ACTIVE) {
+    session_destroy();
+}
+
+header("Location: ../index.php");
 exit;
-?>

@@ -2,12 +2,12 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-session_start();
+// session_start();
 include '../config.php';
 
-if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-    die("Invalid CSRF request");
-}
+// if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+//     die("Invalid CSRF request");
+// }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -26,7 +26,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $result->fetch_assoc();
 
         // ── SECURE PASSWORD CHECK ──
-        if (password_verify($password, $user['password_hash'])) {
+        $isValid = false;
+
+        // Admin mate md5 password check
+        if ($user['role'] === 'admin') {
+
+            if (md5($password) === $user['password']) {
+                $isValid = true;
+            }
+        } else {
+
+            // Normal users mate password_hash check
+            if (password_verify($password, $user['password'])) {
+                $isValid = true;
+            }
+        }
+
+        // Login success
+        if ($isValid) {
 
             // session set
             $_SESSION['user_id'] = $user['id'];
@@ -35,7 +52,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['role'] = $user['role'];
             $_SESSION['profile_image'] = $user['profile_image'];
 
-            // ── ROLE BASED REDIRECT ──
+            $_SESSION['success'] = "Login successful! Welcome " . $user['full_name'];
+
+            // ROLE BASED REDIRECT
             $redirect = "/index.php";
 
             if ($user['role'] === 'admin') {
@@ -43,17 +62,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } elseif ($user['role'] === 'manager') {
                 $redirect = "/dashboard.php";
             } elseif ($user['role'] === 'user') {
-                $redirect = "/index.php";
+                $redirect = "/font-view/index.php";
             }
 
             header("Location: $redirect");
             exit;
-
         } else {
+
             echo "Invalid password";
             exit;
         }
-
     } else {
         echo "User not found or inactive";
         exit;

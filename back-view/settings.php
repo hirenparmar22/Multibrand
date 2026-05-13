@@ -34,10 +34,10 @@ $settings = mysqli_fetch_assoc($settingsQuery);
                 <div class="mb-3">
                     <label class="form-label">Maintenance Mode</label>
                     <select name="maintenance_mode" class="form-control">
-                        <option value="0" <?php if($settings['maintenance_mode'] == '0') echo 'selected'; ?>>
+                        <option value="0" <?php if ($settings['maintenance_mode'] == '0') echo 'selected'; ?>>
                             Disable
                         </option>
-                        <option value="1" <?php if($settings['maintenance_mode'] == '1') echo 'selected'; ?>>
+                        <option value="1" <?php if ($settings['maintenance_mode'] == '1') echo 'selected'; ?>>
                             Enable
                         </option>
                     </select>
@@ -111,10 +111,10 @@ $settings = mysqli_fetch_assoc($settingsQuery);
                 <div class="mb-3">
                     <label class="form-label">Dark Mode</label>
                     <select name="dark_mode" class="form-control">
-                        <option value="0" <?php if($settings['dark_mode'] == '0') echo 'selected'; ?>>
+                        <option value="0" <?php if ($settings['dark_mode'] == '0') echo 'selected'; ?>>
                             Disable
                         </option>
-                        <option value="1" <?php if($settings['dark_mode'] == '1') echo 'selected'; ?>>
+                        <option value="1" <?php if ($settings['dark_mode'] == '1') echo 'selected'; ?>>
                             Enable
                         </option>
                     </select>

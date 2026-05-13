@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 include '../config.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -8,4 +8,3 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include 'manage-menu-content.php';
-?>
