@@ -53,7 +53,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
 
         <!-- Search -->
         <!-- <div class="search-box flex-grow-1"> -->
-            <!-- <div class="input-group">
+        <!-- <div class="input-group">
                 <span class="input-group-text bg-light-subtle border-secondary text-dark">
                     <i class="fas fa-search"></i>
                 </span>
@@ -76,29 +76,29 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
             </button>
 
             <?php
-                $adminImage = !empty($_SESSION['profile_image'])
+            $adminImage = !empty($_SESSION['profile_image'])
                 ? "../uploads/" . $_SESSION['profile_image']
                 : "../assets/default-user.png";
             ?>
 
-           
-            
-                <div class="d-flex align-items-center gap-2 bg-white rounded-4 px-2 py-1 border"
-                  
-                    style="cursor:pointer;">
 
-                    <img src="<?php echo $adminImage; ?>" alt="Admin"
-                        class="rounded-circle border border-danger"
-                        style="width:45px; height:45px; object-fit:cover;">
 
-                    <div class="d-none d-md-block ">
-                        <h6 class="text-dark mb-0">
+            <div class="d-flex align-items-center gap-2 bg-white rounded-4 px-2 py-1 border"
+
+                style="cursor:pointer;">
+
+                <img src="<?php echo $adminImage; ?>" alt="Admin"
+                    class="rounded-circle border border-danger"
+                    style="width:45px; height:45px; object-fit:cover;">
+
+                <div class="d-none d-md-block ">
+                    <h6 class="text-dark mb-0">
                         <?php echo $_SESSION['full_name']; ?>
-                        </h6>
-                        <small class="text-dark">Administration</small>
-                    </div>
-                    <!-- <i class="fas fa-chevron-down text-secondary small ms-1"></i> -->
+                    </h6>
+                    <small class="text-dark">Administration</small>
                 </div>
+                <!-- <i class="fas fa-chevron-down text-secondary small ms-1"></i> -->
+            </div>
 
             <!-- <a href="../logout.php" class="btn btn-danger">
                 <i class="fas fa-sign-out-alt me-1"></i> Logout
@@ -109,82 +109,86 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
 </header>
 
 <style>
-.header-container{
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-}
+    .header-container {
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+    }
 
-/* .search-box{
+    /* .search-box{
     max-width: 420px;
 } */
 
-.dropdown-item:hover{
-    background-color: #f1f1f1;
-    padding-left: 18px;
-    transition: 0.3s;
-}
-.header-inner{
-    flex-direction: row;
-}
-
-.header-right{
-    justify-content: flex-end;
-}
-
-
-@media(max-width:991px){
-
-    .search-box{
-        width: 100%;
-        max-width: 100%;
-        order: 3;
+    .dropdown-item:hover {
+        background-color: #f1f1f1;
+        padding-left: 18px;
+        transition: 0.3s;
     }
-    .header-right{
-        justify-content: center;
+
+    .header-inner {
+        flex-direction: row;
     }
-    /* .header-container .d-flex.justify-content-between{
+
+    .header-right {
+        justify-content: flex-end;
+    }
+
+
+    @media(max-width:991px) {
+
+        .search-box {
+            width: 100%;
+            max-width: 100%;
+            order: 3;
+        }
+
+        .header-right {
+            justify-content: center;
+        }
+
+        /* .header-container .d-flex.justify-content-between{
         flex-direction: column;
         align-items: stretch !important;
     } */
-      
 
-    .header-container .btn-danger{
-        width: 100%;
-    }
 
-    /* .header-container .d-flex.align-items-center.gap-2.flex-wrap{
+        .header-container .btn-danger {
+            width: 100%;
+        }
+
+        /* .header-container .d-flex.align-items-center.gap-2.flex-wrap{
         justify-content: center;
     } */
-}
-
-
-
-/* mobile only */
-@media(max-width:991px){
-    .header-inner{
-        flex-direction: column;
-        align-items: stretch !important;
-    }
-}
-@media(max-width:576px){
-
-    .header-container h4{
-        font-size: 18px;
     }
 
-    .header-container small{
-        font-size: 12px;
+
+
+    /* mobile only */
+    @media(max-width:991px) {
+        .header-inner {
+            flex-direction: column;
+            align-items: stretch !important;
+        }
     }
 
-    .header-container .btn{
-        font-size: 13px;
-    }
+    @media(max-width:576px) {
 
-    .header-container img{
-        width: 40px !important;
-        height: 40px !important;
+        .header-container h4 {
+            font-size: 18px;
+        }
+
+        .header-container small {
+            font-size: 12px;
+        }
+
+        .header-container .btn {
+            font-size: 13px;
+        }
+
+        .header-container img {
+            width: 40px !important;
+            height: 40px !important;
+        }
     }
-}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

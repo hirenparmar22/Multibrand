@@ -14,7 +14,7 @@ $query = mysqli_query($conn, "
     GROUP BY MONTH(created_at)
 ");
 
-while($row = mysqli_fetch_assoc($query)){
+while ($row = mysqli_fetch_assoc($query)) {
     $chart_data[] = $row['total'];
 }
 ?>
@@ -57,54 +57,54 @@ while($row = mysqli_fetch_assoc($query)){
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-const ctx = document.getElementById('orderChart');
+    const ctx = document.getElementById('orderChart');
 
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-        datasets: [{
-            label: 'Orders',
-            data: <?php echo json_encode($chart_data); ?>,
-            borderWidth: 3,
-            fill: true,
-            tension: 0.4
-        }]
-    },
-    options: {
-        responsive: true
-    }
-});
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Orders',
+                data: <?php echo json_encode($chart_data); ?>,
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
 </script>
 
 <style>
-.page-card{
-    background:#fff;
-    padding:25px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
+    .page-card {
+        background: #fff;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
 
-.stats-box{
-    display:flex;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-bottom:20px;
-}
+    .stats-box {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
 
-.stat{
-    flex:1;
-    background:#f5f5f5;
-    padding:20px;
-    border-radius:15px;
-    text-align:center;
-}
+    .stat {
+        flex: 1;
+        background: #f5f5f5;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+    }
 
-.stat h3{
-    font-size:28px;
-}
+    .stat h3 {
+        font-size: 28px;
+    }
 
-.stat p{
-    color:#666;
-}
+    .stat p {
+        color: #666;
+    }
 </style>

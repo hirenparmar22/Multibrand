@@ -2,11 +2,11 @@
     <input type="hidden" name="page" value="users">
 
     <div class="search-wrapper">
-        <input type="text" 
-               name="search" 
-               class="form-control"
-               placeholder="Search by name, username or email"
-               value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+        <input type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search by name, username or email"
+            value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
 
         <button type="submit" class="btn btn-primary">
             Search
@@ -56,10 +56,10 @@
                         <td><?php echo $row['id']; ?></td>
 
                         <td>
-                            <img src="<?php echo $userImage; ?>" 
-                                 width="45" 
-                                 height="45"
-                                 style="border-radius:50%; object-fit:cover;">
+                            <img src="<?php echo $userImage; ?>"
+                                width="45"
+                                height="45"
+                                style="border-radius:50%; object-fit:cover;">
                         </td>
 
                         <td><?php echo $row['full_name']; ?></td>
@@ -75,15 +75,15 @@
 </div>
 
 <style>
-.search-wrapper{
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    padding:0 20px;
-}
+    .search-wrapper {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        padding: 0 20px;
+    }
 
-.main-content{
-    padding: 20px 25px;
-    min-height: calc(100vh - 250px);
-}
+    .main-content {
+        padding: 20px 25px;
+        min-height: calc(100vh - 250px);
+    }
 </style>

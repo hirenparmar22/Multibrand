@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 include '../config.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -10,11 +10,13 @@ if (!isset($_SESSION['user_id'])) {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Add Brand</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
     <div class="container py-5 ">
@@ -59,4 +61,5 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
 </body>
+
 </html>

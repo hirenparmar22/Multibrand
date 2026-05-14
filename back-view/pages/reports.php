@@ -53,37 +53,38 @@ $totalRevenue = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(total_price) 
 
         <tbody>
 
-        <?php
-        $order_query = mysqli_query($conn, "SELECT * FROM admin_orders ORDER BY id DESC LIMIT 10");
+            <?php
+            $order_query = mysqli_query($conn, "SELECT * FROM admin_orders ORDER BY id DESC LIMIT 10");
 
-        if(mysqli_num_rows($order_query) > 0){
-            while($row = mysqli_fetch_assoc($order_query)){
-        ?>
+            if (mysqli_num_rows($order_query) > 0) {
+                while ($row = mysqli_fetch_assoc($order_query)) {
+            ?>
 
-        <tr>
-            <td><?php echo $row['id']; ?></td>
-            <td><?php echo $row['customer_name']; ?></td>
-            <td><?php echo $row['product_name']; ?></td>
-            <td>₹<?php echo $row['total_price']; ?></td>
+                    <tr>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['customer_name']; ?></td>
+                        <td><?php echo $row['product_name']; ?></td>
+                        <td>₹<?php echo $row['total_price']; ?></td>
 
-            <td>
-                <?php if($row['status'] == 'Delivered'){ ?>
-                    <span class="badge delivered">Delivered</span>
-                <?php } elseif($row['status'] == 'Pending'){ ?>
-                    <span class="badge pending">Pending</span>
-                <?php } else { ?>
-                    <span class="badge cancelled">Cancelled</span>
-                <?php } ?>
-            </td>
-        </tr>
+                        <td>
+                            <?php if ($row['status'] == 'Delivered') { ?>
+                                <span class="badge delivered">Delivered</span>
+                            <?php } elseif ($row['status'] == 'Pending') { ?>
+                                <span class="badge pending">Pending</span>
+                            <?php } else { ?>
+                                <span class="badge cancelled">Cancelled</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
 
-        <?php } } else { ?>
+                <?php }
+            } else { ?>
 
-        <tr>
-            <td colspan="5" class="text-center text-danger">No Orders Found</td>
-        </tr>
+                <tr>
+                    <td colspan="5" class="text-center text-danger">No Orders Found</td>
+                </tr>
 
-        <?php } ?>
+            <?php } ?>
 
         </tbody>
     </table>
@@ -91,55 +92,55 @@ $totalRevenue = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(total_price) 
 </div>
 
 <style>
-.page-card{
-    background:#fff;
-    padding:25px;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
+    .page-card {
+        background: #fff;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
 
-.stats-box{
-    display:flex;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-bottom:20px;
-}
+    .stats-box {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
 
-.stat{
-    flex:1;
-    background:#f5f5f5;
-    padding:20px;
-    border-radius:15px;
-    text-align:center;
-}
+    .stat {
+        flex: 1;
+        background: #f5f5f5;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+    }
 
-.stat h3{
-    font-size:28px;
-}
+    .stat h3 {
+        font-size: 28px;
+    }
 
-.stat p{
-    color:#666;
-}
+    .stat p {
+        color: #666;
+    }
 
-/* STATUS BADGES */
-.badge{
-    padding:5px 10px;
-    border-radius:20px;
-    font-size:12px;
-}
+    /* STATUS BADGES */
+    .badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
 
-.delivered{
-    background:#dcfce7;
-    color:#166534;
-}
+    .delivered {
+        background: #dcfce7;
+        color: #166534;
+    }
 
-.pending{
-    background:#fef3c7;
-    color:#92400e;
-}
+    .pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
 
-.cancelled{
-    background:#fee2e2;
-    color:#991b1b;
-}
+    .cancelled {
+        background: #fee2e2;
+        color: #991b1b;
+    }
 </style>

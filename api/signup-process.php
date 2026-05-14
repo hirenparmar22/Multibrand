@@ -1,5 +1,6 @@
 <?php
-include 'config.php';
+
+include '../config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -19,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $tmp_name = $_FILES['profile_image']['tmp_name'];
 
-        move_uploaded_file($tmp_name, "uploads/" . $profile_image);
+        move_uploaded_file($tmp_name, "../uploads/" . $profile_image);
     }
 
     if ($password != $confirm_password) {
@@ -40,13 +41,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Email already exists");
     }
 
-    $hashed_password = md5($password);
+    // $hashed_password = md5($password);
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     $query = "INSERT INTO users (
         full_name,
         username,
         email,
-        password_hash,
+        password,
         role,
         status,
         profile_image
@@ -62,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mysqli_query($conn, $query)) {
 
+        $_SESSION['success'] = "Signup successful! Please login now.";
         $subject = "Welcome to Brand Promotion";
 
         $body = "
@@ -72,11 +75,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         sendMail($email, $subject, $body);
 
-        header("Location: login.php");
-        exit;
 
+        header("Location: /index.php");
+        exit;
     } else {
         echo "Error: " . mysqli_error($conn);
     }
 }
-?>

@@ -1,6 +1,6 @@
 <?php
-session_start();
-include '../config.php';
+// session_start();
+include __DIR__ . '/../config.php';
 
 if (isset($_POST['add_brand'])) {
 
@@ -25,9 +25,7 @@ if (isset($_POST['add_brand'])) {
         } else {
             echo "Database Error";
         }
-
     } else {
         echo "Please Select Brand Logo";
     }
 }
-?>

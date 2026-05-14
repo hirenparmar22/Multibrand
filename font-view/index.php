@@ -1,16 +1,22 @@
 <?php
-session_start();
+// session_start();
 include '../config.php';
 
 // DB mathi design lavu
-$res = mysqli_query($conn, "SELECT * FROM settings WHERE id=1");
+$res = mysqli_query($conn, "
+    SELECT active_design 
+    FROM settings 
+    WHERE id=1
+");
+
 $data = mysqli_fetch_assoc($res);
 
-$design = $data['active_design'];
+// default design
+$design = 'design1';
 
-// fallback (safety)
-if(!$design){
-    $design = 'design1';
+// jo DB ma value hoy to use karo
+if ($data && !empty($data['active_design'])) {
+    $design = $data['active_design'];
 }
 ?>
 
@@ -18,9 +24,11 @@ if(!$design){
 <link rel="stylesheet" href="../designs/<?php echo $design; ?>/style.css">
 
 <!-- Header -->
-<?php include "../designs/$design/header.php"; ?>
 
+ <?php include "../includes/header.php"; ?>
+
+<!-- Content -->
 <?php include "../designs/$design/content.php"; ?>
 
 <!-- Footer -->
-<?php include "../designs/$design/footer.php"; ?>
+<?php include "../includes/footer.php"; ?>

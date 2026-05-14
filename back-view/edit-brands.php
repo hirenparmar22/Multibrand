@@ -1,6 +1,6 @@
 <?php
-session_start();
-include '../config.php';
+// session_start();
+include __DIR__ . '/../config.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
@@ -22,7 +22,7 @@ if (!$data) {
     exit;
 }
 
-if(isset($_POST['update_brand'])){
+if (isset($_POST['update_brand'])) {
 
     $brand_name = mysqli_real_escape_string($conn, $_POST['brand_name']);
     $description = mysqli_real_escape_string($conn, $_POST['description']);
@@ -32,7 +32,7 @@ if(isset($_POST['update_brand'])){
     $new_logo = $_FILES['brand_logo']['name'];
     $tmp_name = $_FILES['brand_logo']['tmp_name'];
 
-    if(!empty($new_logo)){
+    if (!empty($new_logo)) {
 
         $logo_name = time() . "_" . $new_logo;
 
@@ -44,7 +44,6 @@ if(isset($_POST['update_brand'])){
             description='$description'
             WHERE id='$id'
         ");
-
     } else {
 
         mysqli_query($conn, "UPDATE brands SET 
@@ -85,10 +84,10 @@ if(isset($_POST['update_brand'])){
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Current Logo</label><br>
-                    <img src="../uploads/<?php echo $data['brand_logo']; ?>" 
-                         width="100" 
-                         height="100"
-                         style="object-fit: cover; border-radius: 12px;">
+                    <img src="../uploads/<?php echo $data['brand_logo']; ?>"
+                        width="100"
+                        height="100"
+                        style="object-fit: cover; border-radius: 12px;">
                 </div>
 
                 <div class="mb-3">
@@ -122,27 +121,27 @@ if(isset($_POST['update_brand'])){
 </div>
 
 <style>
-.page-wrapper {
-    margin-left: 310px;
-    min-height: 100vh;
-}
-
-.main-content {
-    padding: 30px;
-}
-
-.form-card {
-    max-width: 700px;
-    margin: auto;
-    background: white;
-    border-radius: 24px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
-
-@media (max-width: 991px) {
     .page-wrapper {
-        margin-left: 0;
+        margin-left: 310px;
+        min-height: 100vh;
     }
-}
+
+    .main-content {
+        padding: 30px;
+    }
+
+    .form-card {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (max-width: 991px) {
+        .page-wrapper {
+            margin-left: 0;
+        }
+    }
 </style>

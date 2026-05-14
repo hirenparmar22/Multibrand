@@ -2,7 +2,7 @@
 include '../config.php';
 
 // Add Campaign
-if(isset($_POST['add_campaign'])){
+if (isset($_POST['add_campaign'])) {
 
     $name = $_POST['campaign_name'];
     $budget = $_POST['budget'];
@@ -17,7 +17,7 @@ if(isset($_POST['add_campaign'])){
 }
 
 // Delete Campaign
-if(isset($_GET['delete'])){
+if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
 
     mysqli_query($conn, "DELETE FROM admin_campaigns WHERE id='$id'");
@@ -73,56 +73,57 @@ if(isset($_GET['delete'])){
 
             <tbody>
 
-            <?php
-            $query = mysqli_query($conn, "SELECT * FROM admin_campaigns ORDER BY id DESC");
+                <?php
+                $query = mysqli_query($conn, "SELECT * FROM admin_campaigns ORDER BY id DESC");
 
-            if(mysqli_num_rows($query) > 0){
-                while($row = mysqli_fetch_assoc($query)){
-            ?>
+                if (mysqli_num_rows($query) > 0) {
+                    while ($row = mysqli_fetch_assoc($query)) {
+                ?>
 
-            <tr class="text-center">
+                        <tr class="text-center">
 
-                <td><?php echo $row['id']; ?></td>
+                            <td><?php echo $row['id']; ?></td>
 
-                <td class="fw-semibold">
-                    <?php echo $row['campaign_name']; ?>
-                </td>
+                            <td class="fw-semibold">
+                                <?php echo $row['campaign_name']; ?>
+                            </td>
 
-                <td>₹<?php echo $row['budget']; ?></td>
+                            <td>₹<?php echo $row['budget']; ?></td>
 
-                <td>
-                    <?php if($row['status'] == 'Active'){ ?>
-                        <span class="status active">Active</span>
-                    <?php } elseif($row['status'] == 'Pending'){ ?>
-                        <span class="status pending">Pending</span>
-                    <?php } else { ?>
-                        <span class="status completed">Completed</span>
-                    <?php } ?>
-                </td>
+                            <td>
+                                <?php if ($row['status'] == 'Active') { ?>
+                                    <span class="status active">Active</span>
+                                <?php } elseif ($row['status'] == 'Pending') { ?>
+                                    <span class="status pending">Pending</span>
+                                <?php } else { ?>
+                                    <span class="status completed">Completed</span>
+                                <?php } ?>
+                            </td>
 
-                <td>
-                    <?php echo date("d M Y", strtotime($row['start_date'])); ?>
-                </td>
+                            <td>
+                                <?php echo date("d M Y", strtotime($row['start_date'])); ?>
+                            </td>
 
-                <td>
-                    <a href="dashboard.php?page=campaigns&delete=<?php echo $row['id']; ?>" 
-                       class="btn btn-danger btn-sm"
-                       onclick="return confirm('Delete this campaign?')">
-                       Delete
-                    </a>
-                </td>
+                            <td>
+                                <a href="dashboard.php?page=campaigns&delete=<?php echo $row['id']; ?>"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this campaign?')">
+                                    Delete
+                                </a>
+                            </td>
 
-            </tr>
+                        </tr>
 
-            <?php } } else { ?>
+                    <?php }
+                } else { ?>
 
-            <tr>
-                <td colspan="6" class="text-center text-danger py-4">
-                    No Campaigns Found
-                </td>
-            </tr>
+                    <tr>
+                        <td colspan="6" class="text-center text-danger py-4">
+                            No Campaigns Found
+                        </td>
+                    </tr>
 
-            <?php } ?>
+                <?php } ?>
 
             </tbody>
         </table>
@@ -131,57 +132,57 @@ if(isset($_GET['delete'])){
 </div>
 
 <style>
-.page-card{
-    background: white;
-    border-radius: 24px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
+    .page-card {
+        background: white;
+        border-radius: 24px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
 
-/* FORM */
-.campaign-form{
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
+    /* FORM */
+    .campaign-form {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+    }
 
-.campaign-form input,
-.campaign-form select{
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-}
+    .campaign-form input,
+    .campaign-form select {
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+    }
 
-.campaign-form button{
-    background: #4f46e5;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-}
+    .campaign-form button {
+        background: #4f46e5;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
 
-/* STATUS */
-.status{
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-}
+    /* STATUS */
+    .status {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
 
-.status.active{
-    background: #dcfce7;
-    color: #166534;
-}
+    .status.active {
+        background: #dcfce7;
+        color: #166534;
+    }
 
-.status.pending{
-    background: #fef3c7;
-    color: #92400e;
-}
+    .status.pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
 
-.status.completed{
-    background: #e0e7ff;
-    color: #3730a3;
-}
+    .status.completed {
+        background: #e0e7ff;
+        color: #3730a3;
+    }
 </style>

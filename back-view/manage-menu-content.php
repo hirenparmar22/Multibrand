@@ -42,49 +42,49 @@ $result = mysqli_query($conn, "
 
             <tbody>
 
-                <?php if(mysqli_num_rows($result) > 0){ ?>
-                    
-                    <?php while($row = mysqli_fetch_assoc($result)) { ?>
+                <?php if (mysqli_num_rows($result) > 0) { ?>
 
-                    <tr class="text-center">
-                        <td><?php echo $row['id']; ?></td>
+                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
 
-                        <td><?php echo $row['menu_name']; ?></td>
+                        <tr class="text-center">
+                            <td><?php echo $row['id']; ?></td>
 
-                        <td><?php echo $row['menu_link']; ?></td>
+                            <td><?php echo $row['menu_name']; ?></td>
 
-                        <td>
-                            <div  class="d-flex align-items-center justify-content-center">
-                                <i class="<?php echo $row['menu_icon']; ?> fs-5" style="max-width: 30px;"></i>
-                                
-                                <div class="small text-muted  ms-3 text-start "style="min-width: 120px;">
-                                    <?php echo $row['menu_icon']; ?>
+                            <td><?php echo $row['menu_link']; ?></td>
+
+                            <td>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <i class="<?php echo $row['menu_icon']; ?> fs-5" style="max-width: 30px;"></i>
+
+                                    <div class="small text-muted  ms-3 text-start " style="min-width: 120px;">
+                                        <?php echo $row['menu_icon']; ?>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
+                            </td>
 
-                        <td>
-    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; ">
+                            <td>
+                                <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; ">
 
-        <a href="edit-menu.php?id=<?php echo $row['id']; ?>" 
-           class="btn btn-primary btn-sm rounded-3">
-            Edit
-        </a>
+                                    <a href="edit-menu.php?id=<?php echo $row['id']; ?>"
+                                        class="btn btn-primary btn-sm rounded-3">
+                                        Edit
+                                    </a>
 
-        <a href="delete-menu.php?id=<?php echo $row['id']; ?>" 
-           class="btn btn-danger btn-sm rounded-3"
-           onclick="return confirm('Are you sure you want to delete this menu?')">
-            Delete
-        </a>
+                                    <a href="delete-menu.php?id=<?php echo $row['id']; ?>"
+                                        class="btn btn-danger btn-sm rounded-3"
+                                        onclick="return confirm('Are you sure you want to delete this menu?')">
+                                        Delete
+                                    </a>
 
-        <a href="dashboard.php?page=<?php echo strtolower(str_replace('.php', '', $row['menu_link'])); ?>" 
-           class="btn btn-success btn-sm rounded-3">
-            Open
-        </a>
+                                    <a href="dashboard.php?page=<?php echo strtolower(str_replace('.php', '', $row['menu_link'])); ?>"
+                                        class="btn btn-success btn-sm rounded-3">
+                                        Open
+                                    </a>
 
-    </div>
-</td>
-                    </tr>
+                                </div>
+                            </td>
+                        </tr>
 
                     <?php } ?>
 

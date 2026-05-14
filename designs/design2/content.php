@@ -2,6 +2,9 @@
 // designs/design2/content.php
 // Aurora Light Theme — All main page sections
 
+
+
+
 // ── Sample brand data (replace with DB query) ──
 $brands = [
     [

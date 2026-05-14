@@ -1,5 +1,5 @@
 <?php
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 $id = $_GET['id'];
 
@@ -9,7 +9,7 @@ $data = mysqli_fetch_assoc($select);
 $logo = $data['brand_logo'];
 
 // Delete image from uploads folder
-if(file_exists("../uploads/" . $logo)){
+if (file_exists("../uploads/" . $logo)) {
     unlink("../uploads/" . $logo);
 }
 
@@ -20,20 +20,20 @@ header("Location: dashboard.php?page=brands");
 exit;
 ?>
 <?php
-include '../config.php';
+include __DIR__ . '/../config.php';
 
-if(isset($_GET['id'])){
+if (isset($_GET['id'])) {
 
     $id = $_GET['id'];
 
     $select = mysqli_query($conn, "SELECT * FROM brands WHERE id = '$id'");
     $brand = mysqli_fetch_assoc($select);
 
-    if($brand){
+    if ($brand) {
 
         $logoPath = "../uploads/" . $brand['brand_logo'];
 
-        if(file_exists($logoPath)){
+        if (file_exists($logoPath)) {
             unlink($logoPath);
         }
 

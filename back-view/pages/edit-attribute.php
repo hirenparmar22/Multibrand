@@ -3,18 +3,18 @@ include '../config.php';
 
 $row = [];
 
-if(isset($_GET['id'])){
+if (isset($_GET['id'])) {
 
     $edit_id = $_GET['id'];
 
     $select_query = mysqli_query($conn, "SELECT * FROM admin_attributes WHERE id='$edit_id'");
 
-    if(mysqli_num_rows($select_query) > 0){
+    if (mysqli_num_rows($select_query) > 0) {
         $row = mysqli_fetch_assoc($select_query);
     }
 }
 
-if(isset($_POST['update_attribute'])){
+if (isset($_POST['update_attribute'])) {
 
     $attribute_name = $_POST['attribute_name'];
 
@@ -51,52 +51,52 @@ if(isset($_POST['update_attribute'])){
 </div>
 
 <style>
-.page-content {
-    background: #fff;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
+    .page-content {
+        background: #fff;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
 
-.page-header h2 {
-    font-size: 28px;
-    margin-bottom: 5px;
-}
+    .page-header h2 {
+        font-size: 28px;
+        margin-bottom: 5px;
+    }
 
-.page-header p {
-    color: #666;
-    margin-bottom: 20px;
-}
+    .page-header p {
+        color: #666;
+        margin-bottom: 20px;
+    }
 
-.edit-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+    .edit-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
 
-.form-group label {
-    font-weight: 600;
-    margin-bottom: 8px;
-}
+    .form-group label {
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
 
-.form-control {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
+    .form-control {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
 
-.btn-save {
-    background: #16a34a;
-    color: #fff;
-    border: none;
-    padding: 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    max-width: 220px;
-}
+    .btn-save {
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        max-width: 220px;
+    }
 </style>
