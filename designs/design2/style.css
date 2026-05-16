@@ -476,6 +476,7 @@ h5 {
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
+  background: var(--ink);
 }
 
 .brand-card-title {

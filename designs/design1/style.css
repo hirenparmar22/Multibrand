@@ -1,11 +1,6 @@
 body {
   background: #f5f5f5;
   color: #000;
-  font-family: Arial;
+  font-family: 'DM Sans', sans-serif;
 }
 
-header {
-  background: blue;
-  color: white;
-  padding: 20px;
-}

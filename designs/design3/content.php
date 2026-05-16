@@ -1,30 +1,45 @@
 <?php
-// designs/design3/content.php
-// DESIGN 3 — NOIR LUXE | All sections with Bootstrap layout + internal CSS
 
-$brands = [
-  ['name'=>'Lumière Paris',    'icon'=>'bi-flower1',        'color'=>'#d4af37','badge'=>'Skincare',  'bc'=>'d3-badge-gold',  'desc'=>'Rare botanical luxury skincare from the heart of Paris.'],
-  ['name'=>'Velour Athletics', 'icon'=>'bi-lightning-fill', 'color'=>'#00d4ff','badge'=>'Sport',     'bc'=>'d3-badge-cyan',  'desc'=>'Elite performance wear engineered for champions.'],
-  ['name'=>'Casa Verde',       'icon'=>'bi-tree-fill',      'color'=>'#00e696','badge'=>'Home',      'bc'=>'d3-badge-green', 'desc'=>'Sustainable living goods rooted in natural beauty.'],
-  ['name'=>'Rosé & Co.',       'icon'=>'bi-heart-fill',     'color'=>'#e84393','badge'=>'Beauty',    'bc'=>'d3-badge-pink',  'desc'=>'Bold cosmetics that celebrate every skin story.'],
-  ['name'=>'Orion Tech',       'icon'=>'bi-cpu-fill',       'color'=>'#a78bfa','badge'=>'Tech',      'bc'=>'d3-badge-gold',  'desc'=>'Precision gadgets designed to elevate the everyday.'],
-  ['name'=>'Nomad Table',      'icon'=>'bi-cup-hot-fill',   'color'=>'#fb923c','badge'=>'Gourmet',   'bc'=>'d3-badge-pink',  'desc'=>'Artisan flavors sourced from every corner of the globe.'],
-];
+$brand_query = mysqli_query($conn, "
+    SELECT * FROM brands
+    WHERE status='active'
+    ORDER BY id DESC
+");
 
-$features = [
-  ['icon'=>'bi-gem',            'title'=>'Curated Collections',  'desc'=>'Every brand handpicked for quality, ethics, and innovation.'],
-  ['icon'=>'bi-shield-check',   'title'=>'Secure Transactions',  'desc'=>'End-to-end encrypted payments with multi-layer protection.'],
-  ['icon'=>'bi-truck',          'title'=>'Express Delivery',     'desc'=>'Same-day delivery available in 150+ premium cities.'],
-  ['icon'=>'bi-award',          'title'=>'Elite Membership',     'desc'=>'Unlock VIP perks, early access, and exclusive member pricing.'],
-  ['icon'=>'bi-arrow-repeat',   'title'=>'Easy Returns',         'desc'=>'Hassle-free 30-day returns with no questions asked.'],
-  ['icon'=>'bi-headset',        'title'=>'Concierge Support',    'desc'=>'White-glove support available 24/7 for every member.'],
-];
+$feature_query = mysqli_query($conn, "
+    SELECT * FROM features
+    WHERE status='active'
+");
 
-$testimonials = [
-  ['text'=>'BrandElite is not just a platform — it\'s a lifestyle upgrade. The curation is impeccable and every deal feels personally crafted.', 'name'=>'Kavya Reddy', 'role'=>'Fashion Editor', 'init'=>'KR', 'color'=>'var(--d3-gold)'],
-  ['text'=>'I\'ve saved over ₹40,000 this year alone. The loyalty programme is genuinely the best in the industry.', 'name'=>'Rohan Desai', 'role'=>'Tech Entrepreneur', 'init'=>'RD', 'color'=>'#00d4ff'],
-  ['text'=>'As a brand founder, BrandElite gave us access to a premium audience we never could have reached on our own.', 'name'=>'Sneha Joshi', 'role'=>'Co-Founder, Lumière', 'init'=>'SJ', 'color'=>'#e84393'],
-];
+$testimonial_query = mysqli_query($conn, "
+    SELECT * FROM testimonials
+     WHERE status='1'
+");
+
+
+// $brands = [
+//   ['name'=>'Lumière Paris',    'icon'=>'bi-flower1',        'color'=>'#d4af37','badge'=>'Skincare',  'bc'=>'d3-badge-gold',  'desc'=>'Rare botanical luxury skincare from the heart of Paris.'],
+//   ['name'=>'Velour Athletics', 'icon'=>'bi-lightning-fill', 'color'=>'#00d4ff','badge'=>'Sport',     'bc'=>'d3-badge-cyan',  'desc'=>'Elite performance wear engineered for champions.'],
+//   ['name'=>'Casa Verde',       'icon'=>'bi-tree-fill',      'color'=>'#00e696','badge'=>'Home',      'bc'=>'d3-badge-green', 'desc'=>'Sustainable living goods rooted in natural beauty.'],
+//   ['name'=>'Rosé & Co.',       'icon'=>'bi-heart-fill',     'color'=>'#e84393','badge'=>'Beauty',    'bc'=>'d3-badge-pink',  'desc'=>'Bold cosmetics that celebrate every skin story.'],
+//   ['name'=>'Orion Tech',       'icon'=>'bi-cpu-fill',       'color'=>'#a78bfa','badge'=>'Tech',      'bc'=>'d3-badge-gold',  'desc'=>'Precision gadgets designed to elevate the everyday.'],
+//   ['name'=>'Nomad Table',      'icon'=>'bi-cup-hot-fill',   'color'=>'#fb923c','badge'=>'Gourmet',   'bc'=>'d3-badge-pink',  'desc'=>'Artisan flavors sourced from every corner of the globe.'],
+// ];
+
+// $features = [
+//   ['icon'=>'bi-gem',            'title'=>'Curated Collections',  'desc'=>'Every brand handpicked for quality, ethics, and innovation.'],
+//   ['icon'=>'bi-shield-check',   'title'=>'Secure Transactions',  'desc'=>'End-to-end encrypted payments with multi-layer protection.'],
+//   ['icon'=>'bi-truck',          'title'=>'Express Delivery',     'desc'=>'Same-day delivery available in 150+ premium cities.'],
+//   ['icon'=>'bi-award',          'title'=>'Elite Membership',     'desc'=>'Unlock VIP perks, early access, and exclusive member pricing.'],
+//   ['icon'=>'bi-arrow-repeat',   'title'=>'Easy Returns',         'desc'=>'Hassle-free 30-day returns with no questions asked.'],
+//   ['icon'=>'bi-headset',        'title'=>'Concierge Support',    'desc'=>'White-glove support available 24/7 for every member.'],
+// ];
+
+// $testimonials = [
+//   ['text'=>'BrandElite is not just a platform — it\'s a lifestyle upgrade. The curation is impeccable and every deal feels personally crafted.', 'name'=>'Kavya Reddy', 'role'=>'Fashion Editor', 'init'=>'KR', 'color'=>'var(--d3-gold)'],
+//   ['text'=>'I\'ve saved over ₹40,000 this year alone. The loyalty programme is genuinely the best in the industry.', 'name'=>'Rohan Desai', 'role'=>'Tech Entrepreneur', 'init'=>'RD', 'color'=>'#00d4ff'],
+//   ['text'=>'As a brand founder, BrandElite gave us access to a premium audience we never could have reached on our own.', 'name'=>'Sneha Joshi', 'role'=>'Co-Founder, Lumière', 'init'=>'SJ', 'color'=>'#e84393'],
+// ];
 ?>
 
 
@@ -134,14 +149,14 @@ $testimonials = [
 <div class="d3-marquee-wrap">
   <div class="d3-marquee-track">
     <?php
-    $items = ['Exclusive Member Deals','Free Shipping on ₹999+','New Brands Added Weekly','Earn LuxPoints on Every Order','30-Day Easy Returns','24/7 Concierge Support','Flash Sales Every Friday','Verified Premium Brands'];
+    $items = ['Exclusive Member Deals', 'Free Shipping on ₹999+', 'New Brands Added Weekly', 'Earn LuxPoints on Every Order', '30-Day Easy Returns', '24/7 Concierge Support', 'Flash Sales Every Friday', 'Verified Premium Brands'];
     // Duplicate for seamless loop
     $all = array_merge($items, $items);
-    foreach($all as $item): ?>
-    <div class="d3-marquee-item">
-      <i class="bi bi-diamond-fill"></i>
-      <?= htmlspecialchars($item) ?>
-    </div>
+    foreach ($all as $item): ?>
+      <div class="d3-marquee-item">
+        <i class="bi bi-diamond-fill"></i>
+        <?= htmlspecialchars($item) ?>
+      </div>
     <?php endforeach; ?>
   </div>
 </div>
@@ -159,31 +174,51 @@ $testimonials = [
     </div>
 
     <div class="row g-4">
-      <?php foreach($brands as $i => $b): ?>
-      <div class="col-md-6 col-lg-4 d3-reveal" style="transition-delay:<?= $i * 0.08 ?>s;">
-        <div class="d3-card p-4 h-100">
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <div class="d3-brand-icon-wrap" style="background:<?= $b['color'] ?>22; color:<?= $b['color'] ?>;">
-              <i class="bi <?= $b['icon'] ?>"></i>
+      <?php while ($b = mysqli_fetch_assoc($brand_query)): ?>
+        <div class="col-md-6 col-lg-4 d3-reveal" style="transition-delay:0.08s;">
+          <div class="d3-card p-4 h-100">
+            <?php
+            $badgeClass = 'd3-badge-gold';
+
+            if ($b['category'] == 'Sport') {
+              $badgeClass = 'd3-badge-cyan';
+            } elseif ($b['category'] == 'Home') {
+              $badgeClass = 'd3-badge-green';
+            } elseif ($b['category'] == 'Beauty') {
+              $badgeClass = 'd3-badge-pink';
+            }
+            ?>
+
+            <div class="d-flex justify-content-between align-items-start mb-3">
+
+              <div class="d3-brand-icon-wrap"
+                style="background:<?= $b['color'] ?>22; color:<?= $b['color'] ?>;">
+
+                <i class="bi <?= htmlspecialchars($b['brand_logo']) ?>"></i>
+
+              </div>
+
+              <span class="d3-badge <?= $badgeClass ?>">
+                <?= htmlspecialchars($b['category']) ?>
+              </span>
+
             </div>
-            <span class="d3-badge <?= $b['bc'] ?>"><?= $b['badge'] ?></span>
+
+            <h5 class="mb-2" style="font-family:'Playfair Display',serif;color:var(--d3-white);font-size:1.2rem;">
+              <?= htmlspecialchars($b['brand_name']) ?>
+            </h5>
+            <p style="font-size:.86rem;color:var(--d3-mute);line-height:1.75;margin-bottom:20px;">
+              <?= htmlspecialchars($b['brand_description']) ?>
+            </p>
+
+            <a href="#" class="d-inline-flex align-items-center gap-2 text-decoration-none"
+              style="font-size:.78rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:<?= $b['color'] ?>;transition:gap .3s;"
+              onmouseover="this.style.gap='14px'" onmouseout="this.style.gap='8px'">
+              Explore Collection <i class="bi bi-arrow-right"></i>
+            </a>
           </div>
-
-          <h5 class="mb-2" style="font-family:'Playfair Display',serif;color:var(--d3-white);font-size:1.2rem;">
-            <?= htmlspecialchars($b['name']) ?>
-          </h5>
-          <p style="font-size:.86rem;color:var(--d3-mute);line-height:1.75;margin-bottom:20px;">
-            <?= htmlspecialchars($b['desc']) ?>
-          </p>
-
-          <a href="#" class="d-inline-flex align-items-center gap-2 text-decoration-none"
-             style="font-size:.78rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:<?= $b['color'] ?>;transition:gap .3s;"
-             onmouseover="this.style.gap='14px'" onmouseout="this.style.gap='8px'">
-            Explore Collection <i class="bi bi-arrow-right"></i>
-          </a>
         </div>
-      </div>
-      <?php endforeach; ?>
+      <?php endwhile; ?>
     </div>
 
     <!-- CTA row -->
@@ -226,19 +261,19 @@ $testimonials = [
         <div class="row g-3">
           <?php
           $perks = [
-            ['icon'=>'bi-cash-coin',       'title'=>'₹500 Credits',       'desc'=>'Instant on signup'],
-            ['icon'=>'bi-truck',           'title'=>'Free Shipping',      'desc'=>'On your first 3 orders'],
-            ['icon'=>'bi-calendar-event',  'title'=>'Flash Sale Access',  'desc'=>'Every Friday priority'],
-            ['icon'=>'bi-gift',            'title'=>'Birthday Gift',      'desc'=>'Exclusive member perk'],
+            ['icon' => 'bi-cash-coin',       'title' => '₹500 Credits',       'desc' => 'Instant on signup'],
+            ['icon' => 'bi-truck',           'title' => 'Free Shipping',      'desc' => 'On your first 3 orders'],
+            ['icon' => 'bi-calendar-event',  'title' => 'Flash Sale Access',  'desc' => 'Every Friday priority'],
+            ['icon' => 'bi-gift',            'title' => 'Birthday Gift',      'desc' => 'Exclusive member perk'],
           ];
-          foreach($perks as $p): ?>
-          <div class="col-6">
-            <div style="background:rgba(255,255,255,.04);border:1px solid var(--d3-border);border-radius:10px;padding:18px 16px;">
-              <i class="bi <?= $p['icon'] ?> text-gold d-block mb-2" style="font-size:1.3rem;"></i>
-              <div style="font-size:.88rem;font-weight:500;color:var(--d3-white);"><?= $p['title'] ?></div>
-              <div style="font-size:.75rem;color:var(--d3-mute);"><?= $p['desc'] ?></div>
+          foreach ($perks as $p): ?>
+            <div class="col-6">
+              <div style="background:rgba(255,255,255,.04);border:1px solid var(--d3-border);border-radius:10px;padding:18px 16px;">
+                <i class="bi <?= $p['icon'] ?> text-gold d-block mb-2" style="font-size:1.3rem;"></i>
+                <div style="font-size:.88rem;font-weight:500;color:var(--d3-white);"><?= $p['title'] ?></div>
+                <div style="font-size:.75rem;color:var(--d3-mute);"><?= $p['desc'] ?></div>
+              </div>
             </div>
-          </div>
           <?php endforeach; ?>
         </div>
       </div>
@@ -259,21 +294,21 @@ $testimonials = [
     </div>
 
     <div class="row g-4">
-      <?php foreach($features as $i => $f): ?>
-      <div class="col-md-6 col-lg-4 d3-reveal" style="transition-delay:<?= $i * 0.07 ?>s;">
-        <div class="d3-feature-card">
-          <div class="d3-feature-icon">
-            <i class="bi <?= $f['icon'] ?>"></i>
+      <?php while ($f = mysqli_fetch_assoc($feature_query)):  ?>
+        <div class="col-md-6 col-lg-4 d3-reveal" style="transition-delay:0.07s;">
+          <div class="d3-feature-card">
+            <div class="d3-feature-icon">
+              <i class="bi <?= $f['icon'] ?>"></i>
+            </div>
+            <h6 style="font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600;color:var(--d3-white);margin-bottom:8px;">
+              <?= htmlspecialchars($f['title']) ?>
+            </h6>
+            <p style="font-size:.83rem;color:var(--d3-mute);line-height:1.75;margin:0;">
+              <?= htmlspecialchars($f['description']) ?>
+            </p>
           </div>
-          <h6 style="font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600;color:var(--d3-white);margin-bottom:8px;">
-            <?= htmlspecialchars($f['title']) ?>
-          </h6>
-          <p style="font-size:.83rem;color:var(--d3-mute);line-height:1.75;margin:0;">
-            <?= htmlspecialchars($f['desc']) ?>
-          </p>
         </div>
-      </div>
-      <?php endforeach; ?>
+      <?php endwhile; ?>
     </div>
   </div>
 </section>
@@ -291,24 +326,24 @@ $testimonials = [
     </div>
 
     <div class="row g-4">
-      <?php foreach($testimonials as $i => $t): ?>
-      <div class="col-md-4 d3-reveal" style="transition-delay:<?= $i * 0.1 ?>s;">
-        <div class="d3-tcard">
-          <div class="d3-tcard-quote">"</div>
-          <div class="d3-tcard-stars">★★★★★</div>
-          <p class="d3-tcard-text"><?= htmlspecialchars($t['text']) ?></p>
-          <div class="d-flex align-items-center gap-3">
-            <div class="d3-tcard-avatar" style="background:<?= $t['color'] ?>;">
-              <?= htmlspecialchars($t['init']) ?>
-            </div>
-            <div>
-              <div style="font-size:.88rem;font-weight:500;color:var(--d3-white);"><?= htmlspecialchars($t['name']) ?></div>
-              <div style="font-size:.75rem;color:var(--d3-mute);"><?= htmlspecialchars($t['role']) ?></div>
+      <?php while ($t = mysqli_fetch_assoc($testimonial_query)):  ?>
+        <div class="col-md-4 d3-reveal" style="transition-delay:0.1s;">
+          <div class="d3-tcard">
+            <div class="d3-tcard-quote">"</div>
+            <div class="d3-tcard-stars">★★★★★</div>
+            <p class="d3-tcard-text"><?= htmlspecialchars($t['text']) ?></p>
+            <div class="d-flex align-items-center gap-3">
+              <div class="d3-tcard-avatar" style="background:<?= $t['color'] ?>;">
+                <?= htmlspecialchars($t['avatar']) ?>
+              </div>
+              <div>
+                <div style="font-size:.88rem;font-weight:500;color:var(--d3-white);"><?= htmlspecialchars($t['name']) ?></div>
+                <div style="font-size:.75rem;color:var(--d3-mute);"><?= htmlspecialchars($t['role']) ?></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <?php endforeach; ?>
+      <?php endwhile; ?>
     </div>
   </div>
 </section>
@@ -318,34 +353,40 @@ $testimonials = [
      SCRIPTS
 ════════════════════════════════════════ -->
 <script>
-/* Scroll reveal */
-(function(){
-  const els = document.querySelectorAll('.d3-reveal');
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+  /* Scroll reveal */
+  (function() {
+    const els = document.querySelectorAll('.d3-reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, {
+      threshold: .12
     });
-  },{threshold:.12});
-  els.forEach(el=>io.observe(el));
-})();
+    els.forEach(el => io.observe(el));
+  })();
 
-/* Countdown */
-(function(){
-  const el = document.getElementById('d3countdown');
-  if(!el) return;
-  let end = localStorage.getItem('d3end');
-  if(!end || Date.now()>Number(end)){
-    end = Date.now() + 24*60*60*1000;
-    localStorage.setItem('d3end', end);
-  }
-  function tick(){
-    const diff = Math.max(0, end - Date.now());
-    const h = String(Math.floor(diff/3600000)).padStart(2,'0');
-    const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-    const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-    el.textContent = h+':'+m+':'+s;
-    if(diff>0) requestAnimationFrame(tick);
-  }
-  tick();
-})();
+  /* Countdown */
+  (function() {
+    const el = document.getElementById('d3countdown');
+    if (!el) return;
+    let end = localStorage.getItem('d3end');
+    if (!end || Date.now() > Number(end)) {
+      end = Date.now() + 24 * 60 * 60 * 1000;
+      localStorage.setItem('d3end', end);
+    }
+
+    function tick() {
+      const diff = Math.max(0, end - Date.now());
+      const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+      const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+      el.textContent = h + ':' + m + ':' + s;
+      if (diff > 0) requestAnimationFrame(tick);
+    }
+    tick();
+  })();
 </script>

@@ -50,6 +50,11 @@ function timeLeft($expiry)
 
     return $d > 0 ? "$d d $h h left" : "$h h left";
 }
+$pastel = [
+    'bg' => '#F3E8FF',
+    'fg' => '#7C3AED',
+    'ring' => '#C4B5FD'
+];
 
 /* SAFE DEFAULTS */
 if ($brand) {
@@ -649,7 +654,7 @@ if ($brand) {
 
     <div class="page-wrap">
 
-        <?php if (!$brands): ?>
+        <?php if (!$brand): ?>
             <!-- ── Brand not found ── -->
             <div class="not-found">
                 <span style="font-size:4rem;display:block;margin-bottom:1rem;">🔍</span>

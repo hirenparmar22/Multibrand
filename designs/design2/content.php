@@ -4,89 +4,21 @@
 
 
 
+$brand_query = mysqli_query($conn, "
+    SELECT * FROM brands
+    WHERE status='active'
+    ORDER BY id DESC
+");
 
-// ── Sample brand data (replace with DB query) ──
-$brands = [
-    [
-        'name'  => 'Lumière Paris',
-        'desc'  => 'Luxury French skincare crafted with rare botanical extracts and cutting-edge science.',
-        'icon'  => '✨',
-        'color' => 'linear-gradient(135deg,#f0d98a,#c9a84c)',
-        'tag'   => ['Skincare', 'Gold'],
-        'tag_class' => 'tag-gold',
-    ],
-    [
-        'name'  => 'Velour Athletics',
-        'desc'  => 'Performance sportswear that merges technical innovation with everyday elegance.',
-        'icon'  => '🏃',
-        'color' => 'linear-gradient(135deg,#7bbfea,#3a8fc0)',
-        'tag'   => ['Sport', 'Blue'],
-        'tag_class' => 'tag-sky',
-    ],
-    [
-        'name'  => 'Casa Verde',
-        'desc'  => 'Sustainable home goods designed to bring warmth, nature, and serenity indoors.',
-        'icon'  => '🌿',
-        'color' => 'linear-gradient(135deg,#6dcba0,#2a8a5e)',
-        'tag'   => ['Home', 'Mint'],
-        'tag_class' => 'tag-mint',
-    ],
-    [
-        'name'  => 'Rosé & Co.',
-        'desc'  => 'Premium cosmetics blending bold colour with gentle, skin-loving formulas.',
-        'icon'  => '💄',
-        'color' => 'linear-gradient(135deg,#e88fa3,#c0607a)',
-        'tag'   => ['Beauty', 'Rose'],
-        'tag_class' => 'tag-rose',
-    ],
-    [
-        'name'  => 'Orion Tech',
-        'desc'  => 'Smart lifestyle gadgets that simplify your world with minimalist precision.',
-        'icon'  => '⚡',
-        'color' => 'linear-gradient(135deg,#b8a4e8,#7b5bc8)',
-        'tag'   => ['Tech', 'Violet'],
-        'tag_class' => 'tag-gold',
-    ],
-    [
-        'name'  => 'Nomad Table',
-        'desc'  => 'Artisan foods & drinks sourced from independent producers around the globe.',
-        'icon'  => '☕',
-        'color' => 'linear-gradient(135deg,#f0c08a,#c07030)',
-        'tag'   => ['Food', 'Amber'],
-        'tag_class' => 'tag-gold',
-    ],
-];
+$feature_query = mysqli_query($conn,"
+    SELECT * FROM features
+    WHERE status='active'
+");
 
-$features = [
-    ['icon' => '🎁', 'title' => 'Exclusive Deals',      'desc' => 'Members-only pricing on top brands, refreshed weekly.',       'delay' => '0s'],
-    ['icon' => '🚀', 'title' => 'Fast Delivery',         'desc' => 'Same-day and next-day delivery across 150+ cities.',           'delay' => '0.1s'],
-    ['icon' => '🛡️', 'title' => 'Buyer Protection',      'desc' => 'Every purchase protected by our 30-day satisfaction promise.', 'delay' => '0.2s'],
-    ['icon' => '💎', 'title' => 'Loyalty Rewards',       'desc' => 'Earn LuxPoints on every purchase — redeem for free gifts.',    'delay' => '0.3s'],
-];
-
-$testimonials = [
-    [
-        'text'   => 'BrandLux completely transformed my shopping experience. The curated collections and exclusive discounts are simply unmatched.',
-        'name'   => 'Priya Mehta',
-        'role'   => 'Lifestyle Blogger',
-        'avatar' => 'PM',
-        'color'  => 'linear-gradient(135deg,#c9a84c,#e88fa3)',
-    ],
-    [
-        'text'   => 'I discovered three incredible brands I never knew existed. The platform has impeccable taste and the deals are genuinely special.',
-        'name'   => 'Arjun Shah',
-        'role'   => 'Design Director',
-        'avatar' => 'AS',
-        'color'  => 'linear-gradient(135deg,#7bbfea,#6dcba0)',
-    ],
-    [
-        'text'   => 'As a small brand owner, BrandLux gave us incredible visibility and a loyal customer base we could never have built alone.',
-        'name'   => 'Neha Patel',
-        'role'   => 'Founder, Casa Verde',
-        'avatar' => 'NP',
-        'color'  => 'linear-gradient(135deg,#b8a4e8,#e88fa3)',
-    ],
-];
+$testimonial_query = mysqli_query($conn,"
+    SELECT * FROM testimonials
+    WHERE status=1
+");
 ?>
 
 <!-- ═══════════════════════════════════════
@@ -154,13 +86,13 @@ $testimonials = [
     </div>
 
     <div class="features-grid">
-        <?php foreach ($features as $f): ?>
+        <?php while($f = mysqli_fetch_assoc($feature_query)): ?>
             <div class="glass-card feature-item reveal">
-                <span class="feature-icon" style="--fi-delay:<?= $f['delay'] ?>"><?= $f['icon'] ?></span>
+                <span class="feature-icon" style="--fi-delay:<?= $f['delay_time'] ?>"><?= $f['icon'] ?></span>
                 <h4><?= htmlspecialchars($f['title']) ?></h4>
-                <p><?= htmlspecialchars($f['desc']) ?></p>
+                <p><?= htmlspecialchars($f['description']) ?></p>
             </div>
-        <?php endforeach; ?>
+        <?php endwhile; ?>
     </div>
 </section>
 
@@ -173,29 +105,32 @@ $testimonials = [
     </div>
 
     <div class="brand-grid">
-        <?php foreach ($brands as $brand): ?>
+        <?php while ($brand = mysqli_fetch_assoc($brand_query)): ?>
             <div class="glass-card brand-card reveal">
                 <!-- Top accent bar -->
                 <div class="brand-card-accent"></div>
 
-                <!-- Logo -->
                 <div class="brand-logo shimmer" style="background:<?= $brand['color'] ?>">
-                    <?= $brand['icon'] ?>
+
+                    <?= htmlspecialchars($brand['brand_logo']) ?>
+
                 </div>
 
-                <!-- Tag -->
-                <span class="tag <?= $brand['tag_class'] ?>" style="margin-bottom:12px;display:inline-flex;">
-                    <?= htmlspecialchars($brand['tag'][0]) ?>
+                <span class="tag tag-gold"
+                    style="margin-bottom:12px;display:inline-flex;">
+
+                    <?= htmlspecialchars($brand['category']) ?>
+
                 </span>
 
-                <h3 class="brand-card-title"><?= htmlspecialchars($brand['name']) ?></h3>
-                <p class="brand-card-desc"><?= htmlspecialchars($brand['desc'])  ?></p>
+                <h3 class="brand-card-title"><?= htmlspecialchars($brand['brand_name']) ?></h3>
+                <p class="brand-card-desc"><?= htmlspecialchars($brand['brand_description'])  ?></p>
 
                 <a href="#" class="brand-card-link">
                     View Collection <span>→</span>
                 </a>
             </div>
-        <?php endforeach; ?>
+        <?php endwhile; ?>
     </div>
 </section>
 
@@ -238,7 +173,8 @@ $testimonials = [
     </div>
 
     <div class="testimonial-grid">
-        <?php foreach ($testimonials as $t): ?>
+        <?php while($t = mysqli_fetch_assoc($testimonial_query)): ?>
+
             <div class="glass-card testimonial-card reveal">
                 <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-text">"<?= htmlspecialchars($t['text']) ?>"</p>
@@ -252,7 +188,7 @@ $testimonials = [
                     </div>
                 </div>
             </div>
-        <?php endforeach; ?>
+        <?php endwhile; ?>
     </div>
 </section>
 

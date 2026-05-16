@@ -1,4 +1,20 @@
 <style>
+    :root {
+        --accent: #e6a73c;
+        --accent2: #ff7b54;
+
+        --text: #1f2937;
+        --muted: #6b7280;
+
+        --surface: #ffffff;
+        --border: #e5e7eb;
+
+        --bg: #f9fafb;
+    }
+    body {
+        background: var(--bg);
+        font-family: 'DM Sans', sans-serif;
+    }
     .page-wrap {
         max-width: 1200px;
         margin: 0 auto;
@@ -7,7 +23,7 @@
 
     /* Welcome Banner */
     .welcome-banner {
-        background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+        background: linear-gradient(135deg, #f5dede 0%, #f8f0f0 100%);
         border: 1px solid var(--border);
         border-radius: 18px;
         padding: 32px 36px;
@@ -362,17 +378,17 @@
     }
 </style>
 
-<div class="page-wrap">
+<div class="page-wrap mt-5">
 
     <!-- Welcome Banner -->
     <div class="welcome-banner">
         <div class="welcome-left">
-            <h2>Welcome Back, <span><?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'User'; ?> 👋</span></h2>
+            <h2>Welcome & Back, <span><?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'User'; ?> </span></h2>
             <p>Here's what's happening with your account today.</p>
         </div>
         <div class="welcome-right">
-            <a href="offers.php" class="quick-btn"><i class="fa fa-percent"></i> Browse Offers</a>
-            <a href="orders.php" class="quick-btn outline"><i class="fa fa-box"></i> My Orders</a>
+            <a href="/offers.php" class="quick-btn"><i class="fa fa-percent"></i> Browse Offers</a>
+            <a href="/orders.php" class="quick-btn outline"><i class="fa fa-box"></i> My Orders</a>
         </div>
     </div>
 
@@ -463,7 +479,7 @@
         <div class="section-card">
             <div class="section-head">
                 <h3>Active Offers</h3>
-                <a href="offers.php" class="see-all">See All →</a>
+                <a href="/offers.php" class="see-all">See All →</a>
             </div>
             <div class="offer-item">
                 <div class="offer-thumb">N</div>

@@ -225,16 +225,14 @@ $csrf = $_SESSION['csrf_token'];
             transform: translateY(0);
         }
 
-        /* ════════════════════════════════════════════════
-       1. HERO
-    ════════════════════════════════════════════════ */
+ 
         #hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             position: relative;
             overflow: hidden;
-            padding: 120px 0 80px;
+            padding: 60px 0 40px;
         }
 
         .hero-heading {
@@ -990,12 +988,7 @@ $csrf = $_SESSION['csrf_token'];
 
 <body>
 
-    <!-- padding for fixed header (if combined) -->
-    <div style="height:80px"></div>
-
-    <!-- ═══════════════════════════════════════════════════════
-     HERO SECTION
-═══════════════════════════════════════════════════════ -->
+   
     <section id="hero">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
